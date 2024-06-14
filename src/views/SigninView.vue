@@ -8,7 +8,7 @@
       :label-position="'top'"
       :size="'large'"
     >
-      <el-form-item label="Email:">
+      <el-form-item label="Email Address:">
         <el-input v-model="form.email" clearable />
       </el-form-item>
       <el-form-item label="Password:">
@@ -78,12 +78,12 @@
 }
 </style>
 
-<script setup>
+<script lang="ts" setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-// do not use same name with ref
+
 const form = reactive({
   email: '',
   password: ''
