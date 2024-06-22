@@ -8,7 +8,7 @@
       :label-position="'top'"
       :size="'large'"
     >
-      <el-form-item label="Email Address:">
+      <el-form-item label="Email:">
         <el-input v-model="form.email" clearable />
       </el-form-item>
       <el-form-item label="Password:">
@@ -26,74 +26,119 @@
         <el-button type="primary" round @click="onSubmitGoogle">Continue with Google</el-button>
       </el-form-item>
     </el-form>
-    <div class="tips">
-      Don't have an account? <span class="signup-link" @click="onSignup">Sign Up Now</span>
+
+    <div class="agree">
+      By signing in, I agree to PawsOnCall's Terms of Service and Privacy Policy, confirm that I am
+      18 years of age or older, and consent to receiving email communication.
     </div>
+    <div class="forgot"><a @click="onForgetPwd">Forgot your password?</a></div>
+    <div class="tips">Don't have an PawsOnCall account? <a @click="onSignup">Sign Up Now</a></div>
   </div>
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .signin {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin: 10px auto;
-    padding: 20px;
-    width: 600px;
-    /* border: 1px solid #000; */
-    background: #f2f2f2;
+.signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 10px auto;
+  padding: 20px;
+  width: 600px;
+  background: #f2f2f2;
 
-    .button-google {
-      margin: 12px;
-      padding: 12px 24px;
-      background: #206ff2;
-      border-color: #0e61eb;
-      color: #fff;
-      border-radius: 99999px;
-    }
-    h1 {
-      font-size: 18px;
-      margin: 20px;
-      font-weight: bold;
-    }
-    .form-item {
-      margin: 10px;
-      span {
-        display: inline-block;
-        width: 100px;
-      }
-    }
+  h1 {
+    font-size: 18px;
+    margin: 20px;
+    font-weight: bold;
+  }
 
-    .tips {
-      margin-top: 20px;
-    }
-
-    .signup-link {
-      color: #206ff2;
-      cursor: pointer;
-    }
+  .agree {
+    font-size: 12px;
+  }
+  .tips {
+    margin-top: 20px;
+  }
+  .el-form-item {
+    min-width: 210px;
+    margin: 20px;
   }
 }
 </style>
 
-<script lang="ts" setup>
+<script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { ElMessage } from 'element-plus'
+import { googleAuthCodeLogin } from 'vue3-google-login'
+import { decodeCredential } from 'vue3-google-login'
 const router = useRouter()
-
+// do not use same name with ref
 const form = reactive({
   email: '',
   password: ''
 })
-
-const onSubmit = () => {
+const onSubmit = async () => {
   console.log('submit!')
+  if (!form.email) {
+    ElMessage({
+      type: 'error',
+      message: `Please enter your email address.`
+    })
+  } else if (!form.password) {
+    ElMessage({
+      type: 'error',
+      message: `Please enter your password.`
+    })
+  } else {
+    // ElMessage({
+    //   type: 'success',
+    //   message: `Sign in successfully!`
+    // })
+
+    axios('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: form.email,
+        password: form.password
+      })
+    })
+      .then((response) => {
+        console.log(response)
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+      })
+  }
 }
 const onSubmitGoogle = () => {
+  googleAuthCodeLogin().then(async (response) => {
+    console.log('Handle the response', response)
+    // TODO: need to sent the response to backend to verify the token
+    try {
+      const response = await axios
+        .post('/api/login/oauth2/code/google', {
+          code: response.code
+        })
+        .then((response) => {
+          console.log(response)
+          // redirect to private page:
+          router.push({ name: 'user-dashboard' })
+        })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  })
   console.log('onSubmitGoogle!')
+}
+
+const onForgetPwd = () => {
+  // redirect to sign up page
+  router.push({ name: 'forgot-password' })
 }
 
 const onSignup = () => {
