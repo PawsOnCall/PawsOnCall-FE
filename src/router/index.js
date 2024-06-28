@@ -144,6 +144,14 @@ const router = createRouter({
       // this generates a separate chunk (GroomerDetail.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/GroomerDetailView.vue')
+    },
+    {
+      path: '/groomer-orders',
+      name: 'groomer-orders',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerOrders.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerOrdersView.vue')
     }
   ]
 })
