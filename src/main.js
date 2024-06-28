@@ -11,10 +11,13 @@ import 'element-plus/dist/index.css'
 import vue3GoogleLogin from 'vue3-google-login'
 
 import axios from './api/axios'
+import { createPiniaSessionStoragePlugin } from './plugins/piniaSessionStorage'
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia()
+pinia.use(createPiniaSessionStoragePlugin('authStore'))
+app.use(pinia)
 app.use(router)
 
 app.use(ElementPlus, { size: 'small', zIndex: 3000 })

@@ -9,7 +9,7 @@
       :size="'large'"
     >
       <el-form-item label="Email:">
-        <el-input v-model="form.email" clearable />
+        <el-input v-model="form.username" clearable />
       </el-form-item>
       <el-form-item label="Password:">
         <el-input v-model="form.password" type="password" show-password></el-input>
@@ -66,21 +66,38 @@
 }
 </style>
 
+<script>
+export default {
+  data() {
+    return {
+      response: [],
+      errors: []
+    }
+  },
+  methods: {
+    loginGoogle() {
+      window.location.href = 'http://localhost:8080/oauth2/authorization/google'
+    }
+  }
+}
+</script>
+
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { googleAuthCodeLogin } from 'vue3-google-login'
-import { decodeCredential } from 'vue3-google-login'
+import { userAuthStore } from '../stores/userAuthStore'
+const authStore = userAuthStore()
 const router = useRouter()
-// do not use same name with ref
+
 const form = reactive({
-  email: '',
+  username: '',
   password: ''
 })
 const onSubmit = async () => {
   console.log('submit!')
-  if (!form.email) {
+  if (!form.username) {
     ElMessage({
       type: 'error',
       message: `Please enter your email address.`
@@ -96,23 +113,35 @@ const onSubmit = async () => {
     //   message: `Sign in successfully!`
     // })
 
-    axios('/api/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: form.email,
-        password: form.password
-      })
-    })
-      .then((response) => {
-        console.log(response)
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-      })
+    // fetch('/api/users', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     email: form.email,
+    //     password: form.password
+    //   })
+    // })
+    //   .then((response) => {
+    //     console.log(response)
+    const response = {
+      data: {
+        id: 1,
+        email: '123@gmail.com',
+        name: 'Jack'
+      }
+    }
+
+    const user = response.data
+    authStore.login(user)
+    // redirect to private page:
+
+    router.push({ name: 'user-dashboard' })
+    // })
+    // .then((data) => {
+    //   console.log(data)
+    // })
   }
 }
 const onSubmitGoogle = () => {
@@ -120,15 +149,19 @@ const onSubmitGoogle = () => {
     console.log('Handle the response', response)
     // TODO: need to sent the response to backend to verify the token
     try {
-      const response = await axios
-        .post('/api/login/oauth2/code/google', {
+      fetch('/api/login/oauth2/code/google', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
           code: response.code
         })
-        .then((response) => {
-          console.log(response)
-          // redirect to private page:
-          router.push({ name: 'user-dashboard' })
-        })
+      }).then((response) => {
+        console.log(response)
+        // redirect to private page:
+        router.push({ name: 'user-dashboard' })
+      })
     } catch (error) {
       console.error('Error fetching data:', error)
     }
@@ -137,7 +170,7 @@ const onSubmitGoogle = () => {
 }
 
 const onForgetPwd = () => {
-  // redirect to sign up page
+  // todo: redirect to sign up page
   router.push({ name: 'forgot-password' })
 }
 
