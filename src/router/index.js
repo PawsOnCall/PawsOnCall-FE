@@ -98,6 +98,22 @@ const router = createRouter({
       component: () => import('../views/UserProfileView.vue')
     },
     {
+      path: '/user-payment',
+      name: 'user-payment',
+      // route level code-splitting
+      // this generates a separate chunk (UserPayment.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/UserPaymentView.vue')
+    },
+    {
+      path: '/payment-history',
+      name: 'payment-history',
+      // route level code-splitting
+      // this generates a separate chunk (PaymentHistory.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/UserPaymentHistoryView.vue')
+    },
+    {
       path: '/user-orders',
       name: 'user-orders',
       // route level code-splitting
