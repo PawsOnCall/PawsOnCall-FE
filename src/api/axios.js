@@ -1,7 +1,26 @@
+// src/axios.js
 import axios from 'axios'
 
-const axiosInstance = axios.create({
-  withCredentials: false // 如果需要携带跨域凭证（如cookie），则设置为true
+const instance = axios.create({
+  baseURL: '/',
+  timeout: 1000,
+  headers: {
+    'Content-Type': 'application/json'
+  }
 })
 
-export default axiosInstance
+// add Authorization header to all requests
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
+
+export default instance
