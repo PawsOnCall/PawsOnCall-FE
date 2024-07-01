@@ -150,8 +150,8 @@ getUserDashboard()
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
-  height: 100px;
   border: 1px solid #ebeef5;
+  padding: 12px;
 
   .pet-photo {
     display: block;
