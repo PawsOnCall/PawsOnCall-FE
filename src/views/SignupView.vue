@@ -2,27 +2,20 @@
   <div class="signup">
     <h1>Sign Up to PawsOnCall</h1>
 
-    <el-form label-width="auto" style="max-width: 500px; margin-top: 30px" :size="'large'">
-      <el-form-item>
-        <el-button type="primary" round @click="onSubmitGoogle">Continue with Google</el-button>
-      </el-form-item>
-    </el-form>
-    <div>OR</div>
     <el-form
       :model="form"
       label-width="auto"
-      style="max-width: 500px; padding-left: 60px; padding-top: 30px"
+      style="max-width: 500px"
       :label-position="'top'"
       :size="'large'"
       :inline="true"
     >
-      <el-form-item label="First Name:">
-        <el-input v-model="form.firstname" clearable />
+      <el-form-item label="Frist Name:">
+        <el-input v-model="form.firstName" clearable />
       </el-form-item>
       <el-form-item label="Last Name:">
-        <el-input v-model="form.lastname" clearable></el-input>
+        <el-input v-model="form.lastName" clearable />
       </el-form-item>
-
       <el-form-item label="Email Address:">
         <el-input v-model="form.email" clearable />
       </el-form-item>
@@ -32,95 +25,142 @@
       <el-form-item label="Password:">
         <el-input v-model="form.password" type="password" show-password></el-input>
       </el-form-item>
-      <el-form-item label="Confirm Password:">
+      <el-form-item label="ConfirmPassword:">
         <el-input v-model="form.confirmPassword" type="password" show-password></el-input>
       </el-form-item>
-      <el-form-item label="Post Code:">
-        <el-input v-model="form.postCode"></el-input>
+      <el-form-item label="City:">
+        <el-select v-model="form.city">
+          <el-option label="Vancouver" value="Vancouver"></el-option>
+          <el-option label="Richmond" value="Richmond"></el-option>
+          <el-option label="Burnaby" value="Burnaby"></el-option>
+          <el-option label="North Vancouver" value="North Vancouver"></el-option>
+          <el-option label="West Vancouver" value="West Vancouver"></el-option>
+          <el-option label="Coquitlam" value="Coquitlam"></el-option>
+          <el-option label="Delta" value="Delta"></el-option>
+          <el-option label="New Westminster" value="New Westminster"></el-option>
+          <el-option label="Langley" value="Langley"></el-option>
+          <el-option label="Surrey" value="Surrey"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item style="width: 174px"></el-form-item>
-      <el-form-item style="width: 500px">
-        <el-button type="primary" round @click="onSubmit" style="margin: 10px 144px"
-          >Sign Up</el-button
+      <el-form-item label="Post Code:">
+        <el-input v-model="form.postcode"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" style="width: 174px; margin-left: 150px" round @click="onSubmit"
+          >Sign In</el-button
         >
       </el-form-item>
     </el-form>
-    <div class="tips">
-      By signing in or signing up, I agree to PawsOnCall's
-      <a @click="onPolicy">Terms of Service and Privacy Policy</a>, confirm that I am 18 years of
-      age or older, and consent to receiving email communication.
-    </div>
-    <div class="forgetPwd"><a @click="onForget">Forgot your password?</a></div>
+
+    <div>-or-</div>
+    <el-form label-width="auto" :size="'large'">
+      <el-form-item>
+        <el-button type="primary" style="margin-left: 24px" round @click="onSubmitGoogle"
+          >Continue with Google</el-button
+        >
+      </el-form-item>
+    </el-form>
+    <div class="tips">Already have a Rover account? <a @click="onSignin">Sign in now.</a></div>
   </div>
 </template>
 
 <style>
-@media (min-width: 1024px) {
-  .signup {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    margin: 50px auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    width: 600px;
-    background: #f2f2f2;
-    .button-google {
-      margin: 12px;
-      padding: 12px 24px;
-      background: #206ff2;
-      border-color: #0e61eb;
-      color: #fff;
-      border-radius: 99999px;
-    }
-    h1 {
-      font-size: 18px;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-    .form-item {
-      margin: 10px;
-      span {
-        display: inline-block;
-        width: 150px;
-      }
-    }
-    .tips {
-      padding: 20px;
-    }
-    .forgetPwd {
-      font-size: 18px;
-    }
+.signup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 20px 180px;
+  padding-bottom: 24px;
+  background: #f2f2f2;
+  h1 {
+    font-size: 18px;
+    margin: 20px;
+    font-weight: bold;
+  }
+  .el-form-item {
+    min-width: 210px;
+    margin: 20px;
   }
 }
 </style>
+
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { ElMessage } from 'element-plus'
+import axios from '../api/axios'
+import md5 from 'md5-hash'
 const router = useRouter()
-
 const form = reactive({
-  firstname: '',
-  lastname: '',
-  phone: '',
+  userType: 'customer',
+  firstName: '',
+  lastName: '',
   email: '',
+  phone: '',
   password: '',
   confirmPassword: '',
-  postCode: ''
+  city: '',
+  postcode: ''
 })
 
 const onSubmit = () => {
-  console.log('submit!')
+  // console.log('submit!')
+  if (
+    !form.firstName ||
+    !form.lastName ||
+    !form.email ||
+    !form.phone ||
+    !form.password ||
+    !form.city ||
+    !form.postcode
+  ) {
+    ElMessage({
+      type: 'error',
+      message: 'Please fill in all fields!'
+    })
+    return
+  }
+  if (form.password !== form.confirmPassword) {
+    ElMessage({
+      type: 'error',
+      message: 'Passwords do not match!'
+    })
+    return
+  }
+  axios
+    .post('/api/api/account/register', {
+      userType: form.userType,
+      firstName: form.firstName,
+      lastName: form.lastName,
+      email: form.email,
+      phone: form.phone,
+      password: md5(form.password),
+      city: form.city,
+      postcode: form.postcode
+    })
+    .then((res) => {
+      console.log(res)
+      if (res.data) {
+        ElMessage({
+          type: 'success',
+          message: `Sign up successful!`
+        })
+        router.push({ name: 'signin' })
+      } else {
+        ElMessage({
+          type: 'error',
+          message: `Sign up failed!`
+        })
+      }
+    })
 }
 const onSubmitGoogle = () => {
   console.log('onSubmitGoogle!')
 }
-const onPolicy = () => {
-  router.push({ name: 'policy' })
-}
-const onForget = () => {
-  router.push({ name: 'forgot-password' })
+
+const onSignin = () => {
+  // redirect to sign up page
+  router.push({ name: 'signin' })
 }
 </script>

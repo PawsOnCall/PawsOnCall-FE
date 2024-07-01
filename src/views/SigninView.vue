@@ -88,6 +88,9 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { googleAuthCodeLogin } from 'vue3-google-login'
 import { userAuthStore } from '../stores/userAuthStore'
+import axios from '../api/axios'
+import md5 from 'md5-hash'
+
 const authStore = userAuthStore()
 const router = useRouter()
 
@@ -108,40 +111,38 @@ const onSubmit = async () => {
       message: `Please enter your password.`
     })
   } else {
-    // ElMessage({
-    //   type: 'success',
-    //   message: `Sign in successfully!`
-    // })
+    await axios
+      .post('/api/login', {
+        username: form.username,
+        password: md5(form.password)
+      })
+      .then((response) => {
+        const token = response.data.token
+        localStorage.setItem('token', token)
+        // authStore.login( / )
 
-    // fetch('/api/users', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     email: form.email,
-    //     password: form.password
-    //   })
-    // })
-    //   .then((response) => {
-    //     console.log(response)
-    const response = {
-      data: {
-        id: 1,
-        email: '123@gmail.com',
-        name: 'Jack'
-      }
-    }
-
-    const user = response.data
-    authStore.login(user)
-    // redirect to private page:
-
-    router.push({ name: 'user-dashboard' })
-    // })
-    // .then((data) => {
-    //   console.log(data)
-    // })
+        // get user info
+        axios
+          .get(`/api/api/account/getUserInfo?email=${form.username}`)
+          .then((response) => {
+            authStore.login(response.data.data)
+            if (response.data.data.userType === 'customer') {
+              router.push({ name: 'user-dashboard' })
+            } else {
+              router.push({ name: 'groomer-dashboard' })
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error)
+          })
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+        ElMessage({
+          type: 'error',
+          message: `Invalid email or password.`
+        })
+      })
   }
 }
 const onSubmitGoogle = () => {
