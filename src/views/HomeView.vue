@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- welcome -->
+    <!-- 欢迎部分 -->
     <section class="hero">
       <div class="hero-left"></div>
       <div class="hero-content">
@@ -12,7 +12,7 @@
       <div class="hero-right"></div>
     </section>
 
-    <!-- our service -->
+    <!-- 我们的服务 -->
     <section class="services">
       <h2>Our Services</h2>
       <div class="service-cards">
@@ -34,7 +34,7 @@
       </div>
     </section>
 
-    <!-- customer evaluation -->
+    <!-- 用户评价 -->
     <section class="testimonials">
       <h2>What Our Clients Say</h2>
       <div class="testimonial-cards">
@@ -53,7 +53,7 @@
       </div>
     </section>
 
-    <!-- contact us -->
+    <!-- 联系我们 -->
     <section class="contact">
       <h2>Contact Us</h2>
       <form>
@@ -74,10 +74,10 @@ export default {
 
 <style scoped>
 .home {
-  background-color: #f5f5f5; 
+  background-color: #f5f5f5; /* 整体背景改为原来的浅灰色 */
 }
 
-/* welcome */
+/* 欢迎部分 */
 .hero {
   display: flex;
   height: 300px;
@@ -93,7 +93,7 @@ export default {
 
 .hero-content {
   flex: 2;
-  background-color: #f5f5f5; 
+  background-color: #f5f5f5; /* 中间文字区域留白为背景色 */
   padding: 50px 20px;
 }
 
@@ -118,7 +118,7 @@ export default {
   margin-top: 1cm
 }
 
-/* our service */
+/* 我们的服务 */
 .services {
   text-align: center;
   padding: 50px 20px;
@@ -132,7 +132,7 @@ export default {
 
 .service-card {
   background-color: #eafaf1;
-  border: 2px solid #eafaf1; 
+  border: 2px solid #eafaf1; /* 图片的外框颜色改为浅绿色 */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 10px;
@@ -154,7 +154,7 @@ export default {
   color: #7f8c8d;
 }
 
-/* customer evaluation */
+/* 用户评价 */
 .testimonials {
   background-color: #f5f5f5;
   text-align: center;
@@ -169,7 +169,7 @@ export default {
 
 .testimonial-card {
   background-color: #eafaf1;
-  border: 2px solid #eafaf1; 
+  border: 2px solid #eafaf1; /* 图片的外框颜色改为浅绿色 */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 10px;
@@ -188,7 +188,7 @@ export default {
   color: #7f8c8d;
 }
 
-/* contact us */
+/* 联系我们 */
 .contact {
   text-align: center;
   padding: 50px 20px;
