@@ -55,7 +55,3 @@ npm run test:e2e
 ```sh
 npm run lint
 ```
-
-## UI Library: element-plus
-
-https://element-plus.org/en-US/component/overview.html
