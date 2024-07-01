@@ -13,11 +13,11 @@ export default defineConfig({
     }
   },
   server: {
-    port: 5000,
+    // port: 5000,
     // proxy: to solve CORS issue
     proxy: {
       '^/api': {
-        target: 'http://localhost:8080', // backend server
+        target: 'http://52.15.187.38:8080', // backend server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }
