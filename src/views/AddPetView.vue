@@ -10,13 +10,43 @@
             <el-form size="large">
               <el-form-item label="upload your pet photo">
                 <el-upload
-                  class="avatar-uploader"
-                  :show-file-list="false"
-                  :on-success="handleUploadSuccess"
-                  :before-upload="beforeUpload"
+                  action="#"
+                  list-type="picture-card"
+                  :auto-upload="false"
+                  :limit="1"
+                  :on-exceed="handleExceed"
+                  :on-remove="handleRemove"
+                  :on-change="handleChange"
+                  v-model:file-list="fileList"
+                  ref="upload"
                 >
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                  <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                  <el-icon><Plus /></el-icon>
+
+                  <template #file="{ file }">
+                    <div>
+                      <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+                      <span class="el-upload-list__item-actions">
+                        <span
+                          class="el-upload-list__item-preview"
+                          @click="handlePictureCardPreview(file)"
+                        >
+                          <el-icon><zoom-in /></el-icon>
+                        </span>
+                        <span
+                          v-if="!disabled"
+                          class="el-upload-list__item-delete"
+                          @click="handleRemove(file)"
+                        >
+                          <el-icon><Delete /></el-icon>
+                        </span>
+                      </span>
+                    </div>
+                  </template>
+                  <template #tip>
+                    <div class="el-upload__tip text-red">
+                      limit 1 file, new file will cover the old file
+                    </div>
+                  </template>
                 </el-upload>
               </el-form-item>
 
@@ -54,46 +84,38 @@
 
               <el-form-item label="Micorchipped?">
                 <el-radio-group v-model="form.micorchipped">
-                  <el-radio value="1" size="large">Yes</el-radio>
-                  <el-radio value="0" size="large">No</el-radio>
+                  <el-radio :value="true" size="large">Yes</el-radio>
+                  <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Spayed/Neutered?">
                 <el-radio-group v-model="form.spayed">
-                  <el-radio value="1" size="large">Yes</el-radio>
-                  <el-radio value="0" size="large">No</el-radio>
+                  <el-radio :value="true" size="large">Yes</el-radio>
+                  <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="House Trained?">
                 <el-radio-group v-model="form.houseTrained">
-                  <el-radio value="1" size="large">Yes</el-radio>
-                  <el-radio value="0" size="large">No</el-radio>
-                  <el-radio value="2" size="large">Unsure</el-radio>
-                  <el-radio value="3" size="large">Depends</el-radio>
+                  <el-radio :value="true" size="large">Yes</el-radio>
+                  <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Kids?">
-                <el-radio-group v-model="form.FriendlyWithKids">
-                  <el-radio value="1" size="large">Yes</el-radio>
-                  <el-radio value="0" size="large">No</el-radio>
-                  <el-radio value="2" size="large">Unsure</el-radio>
-                  <el-radio value="3" size="large">Depends</el-radio>
+                <el-radio-group v-model="form.friendlyWithKids">
+                  <el-radio :value="true" size="large">Yes</el-radio>
+                  <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Dogs?">
-                <el-radio-group v-model="form.FriendlyWithDogs">
-                  <el-radio value="1" size="large">Yes</el-radio>
-                  <el-radio value="0" size="large">No</el-radio>
-                  <el-radio value="2" size="large">Unsure</el-radio>
-                  <el-radio value="3" size="large">Depends</el-radio>
+                <el-radio-group v-model="form.friendlyWithDogs">
+                  <el-radio :value="true" size="large">Yes</el-radio>
+                  <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Cats?">
-                <el-radio-group v-model="form.FriendlyWithCats">
-                  <el-radio value="1" size="large">Yes</el-radio>
-                  <el-radio value="0" size="large">No</el-radio>
-                  <el-radio value="2" size="large">Unsure</el-radio>
-                  <el-radio value="3" size="large">Depends</el-radio>
+                <el-radio-group v-model="form.friendlyWithCats">
+                  <el-radio :value="true" size="large">Yes</el-radio>
+                  <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Adoption Date" style="width: 400px">
@@ -108,7 +130,20 @@
               <el-form-item label="About your pet" style="width: 400px">
                 <el-input type="textarea" v-model="form.aboutPet" />
               </el-form-item>
+              <el-form-item style="width: 800px">
+                <el-button
+                  style="margin: 20px auto"
+                  round
+                  type="primary"
+                  size="large"
+                  @click="savePet"
+                  >Save</el-button
+                ></el-form-item
+              >
             </el-form>
+            <el-dialog v-model="dialogVisible">
+              <img w-full :src="dialogImageUrl" alt="Preview Image" />
+            </el-dialog>
           </el-col>
         </el-row>
       </el-col>
@@ -123,46 +158,39 @@
 import Sidebar from '@/components/Siderbar.vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-
+import axios from 'axios'
 import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
-interface UploadRawFile extends File {
-  uid: number
+import { ElMessage, UploadUserFile } from 'element-plus'
+import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
+import type { UploadFile } from 'element-plus'
+import { genFileId } from 'element-plus'
+import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
+const upload = ref<UploadInstance>()
+
+const fileList = ref<UploadUserFile[]>([])
+const dialogImageUrl = ref('')
+const dialogVisible = ref(false)
+const disabled = ref(false)
+const handleExceed: UploadProps['onExceed'] = (files) => {
+  upload.value!.clearFiles()
+  const file = files[0] as UploadRawFile
+  file.uid = genFileId()
+  upload.value!.handleStart(file)
 }
-type UploadUserFile = Omit<UploadFile, 'status' | 'uid'> &
-  Partial<Pick<UploadFile, 'status' | 'uid'>>
-
-type UploadStatus = 'ready' | 'uploading' | 'success' | 'fail'
-interface UploadFile {
-  name: string
-  percentage?: number
-  status: UploadStatus
-  size?: number
-  response?: unknown
-  uid: number
-  url?: string
-  raw?: UploadRawFile
+const handleRemove = (file: UploadFile) => {
+  fileList.value.splice(fileList.value.indexOf(file), 1)
 }
-type UploadFiles = UploadFile[]
-
-import { UploadProps } from 'element-plus'
-
-const imageUrl = ref('')
-
-const handleUploadSuccess: UploadProps['onSuccess'] = (response, uploadFile) => {
-  imageUrl.value = URL.createObjectURL(uploadFile.raw!)
-}
-
-const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
-  if (rawFile.type !== 'image/jpeg') {
-    ElMessage.error('Avatar picture must be JPG format!')
-    return false
-  } else if (rawFile.size / 1024 / 1024 > 2) {
-    ElMessage.error('Avatar picture size can not exceed 2MB!')
-    return false
+const handleChange = (file: UploadFile) => {
+  if (file.raw) {
+    convertBlobToBase64(file.raw).then((base64) => {
+      file.url = base64 as string
+    })
   }
-  return true
+}
+
+const handlePictureCardPreview = (file: UploadFile) => {
+  dialogImageUrl.value = file.url!
+  dialogVisible.value = true
 }
 
 const router = useRouter()
@@ -171,19 +199,61 @@ const form = reactive({
   petType: '',
   petName: '',
   weight: '',
-  ageYers: '',
-  ageMonths: '',
   sex: '',
   breed: '',
-  micorchipped: '',
-  spayed: '',
-  houseTrained: '',
-  FriendlyWithKids: '',
-  FriendlyWithDogs: '',
-  FriendlyWithCats: '',
+  micorchipped: false,
+  spayed: false,
+  houseTrained: false,
+  friendlyWithKids: false,
+  friendlyWithDogs: false,
+  friendlyWithCats: false,
   adoptionDate: '',
   aboutPet: ''
 })
+
+const convertBlobToBase64 = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      resolve(reader.result)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(blob)
+  })
+}
+
+const savePet = () => {
+  console.log(form)
+  console.log(fileList.value[0].url)
+  axios
+    .post(`/api/api/customer/savePet`, {
+      userId: 102, //TODO: replace with actual user id
+      type: form.petType,
+      name: form.petName,
+      weight: form.weight,
+      sex: form.sex,
+      breed: form.breed,
+      micorchipped: form.micorchipped,
+      spayed: form.spayed,
+      houseTrained: form.houseTrained,
+      friendlyWithKids: form.friendlyWithKids,
+      friendlyWithDogs: form.friendlyWithDogs,
+      friendlyWithCats: form.friendlyWithCats,
+      adoptionDate: form.adoptionDate,
+      aboutPet: form.aboutPet,
+      photo: fileList.value[0].url
+    })
+    .then((response) => {
+      console.log(response.data)
+      ElMessage.success('Pet saved successfully')
+      setTimeout(() => {
+        router.push({ name: 'user-dashboard' })
+      }, 1500)
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
 </script>
 <style scoped>
 .avatar-uploader .avatar {
