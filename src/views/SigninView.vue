@@ -117,7 +117,7 @@ const onSubmit = async () => {
         password: md5(form.password)
       })
       .then((response) => {
-        const token = response.data.token
+        const token = response.token
         localStorage.setItem('token', token)
         // authStore.login( / )
 
@@ -125,8 +125,8 @@ const onSubmit = async () => {
         axios
           .get(`/api/api/account/getUserInfo?email=${form.username}`)
           .then((response) => {
-            authStore.login(response.data.data)
-            if (response.data.data.userType === 'customer') {
+            authStore.login(response.data)
+            if (response.data.userType === 'customer') {
               router.push({ name: 'user-dashboard' })
             } else {
               router.push({ name: 'groomer-dashboard' })

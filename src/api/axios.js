@@ -9,7 +9,7 @@ const instance = axios.create({
   }
 })
 
-// add Authorization header to all requests
+//  Authorization
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
