@@ -6,17 +6,8 @@
         <el-row>
           <el-col :span="4"> </el-col>
           <el-col :span="20">
-            <el-form :model="form" size="large">
-              <el-form-item label="Do you have a pet?">
-                <el-radio-group v-model="form.havePet">
-                  <el-radio :value="true" size="large">Yes</el-radio>
-                  <el-radio :value="false" size="large">No</el-radio>
-                </el-radio-group>
-              </el-form-item>
-            </el-form>
-            <el-divider></el-divider>
-            <div v-if="form.havePet">Tell us about your pet</div>
-            <el-form v-if="form.havePet" size="large">
+            <h4>Tell us about your pet</h4>
+            <el-form size="large">
               <el-form-item label="upload your pet photo">
                 <el-upload
                   class="avatar-uploader"
@@ -30,7 +21,7 @@
               </el-form-item>
 
               <el-form-item label="What type of pet?">
-                <el-radio-group v-model="form2.petType">
+                <el-radio-group v-model="form.petType">
                   <el-radio value="dog" size="large">dog</el-radio>
                   <el-radio value="cat" size="large">cat</el-radio>
                 </el-radio-group>
@@ -38,15 +29,15 @@
 
               <div style="display: flex">
                 <el-form-item label="name" style="width: 200px">
-                  <el-input v-model="form2.petName"> </el-input>
+                  <el-input v-model="form.petName"> </el-input>
                 </el-form-item>
                 <el-form-item label="weight(lbs)" style="width: 200px; margin-left: 20px">
-                  <el-input v-model="form2.weight"> </el-input>
+                  <el-input v-model="form.weight"> </el-input>
                 </el-form-item>
               </div>
 
               <el-form-item label="sex">
-                <el-radio-group v-model="form2.sex">
+                <el-radio-group v-model="form.sex">
                   <el-radio value="male" size="large">Male</el-radio>
                   <el-radio value="female" size="large">Female</el-radio>
                 </el-radio-group>
@@ -55,26 +46,26 @@
                 label="Breed(If your pet is a mixed breed, enter 'Mixed')"
                 style="width: 500px"
               >
-                <el-input v-model="form2.breed"> </el-input>
+                <el-input v-model="form.breed"> </el-input>
               </el-form-item>
-            </el-form>
-            <el-divider></el-divider>
-            <div v-if="form.havePet">Additional Details</div>
-            <el-form v-if="form.havePet" size="large">
+
+              <el-divider></el-divider>
+              <h4>Additional Details</h4>
+
               <el-form-item label="Micorchipped?">
-                <el-radio-group v-model="form3.micorchipped">
+                <el-radio-group v-model="form.micorchipped">
                   <el-radio value="1" size="large">Yes</el-radio>
                   <el-radio value="0" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Spayed/Neutered?">
-                <el-radio-group v-model="form3.spayed">
+                <el-radio-group v-model="form.spayed">
                   <el-radio value="1" size="large">Yes</el-radio>
                   <el-radio value="0" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="House Trained?">
-                <el-radio-group v-model="form3.houseTrained">
+                <el-radio-group v-model="form.houseTrained">
                   <el-radio value="1" size="large">Yes</el-radio>
                   <el-radio value="0" size="large">No</el-radio>
                   <el-radio value="2" size="large">Unsure</el-radio>
@@ -82,7 +73,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Kids?">
-                <el-radio-group v-model="form3.FriendlyWithKids">
+                <el-radio-group v-model="form.FriendlyWithKids">
                   <el-radio value="1" size="large">Yes</el-radio>
                   <el-radio value="0" size="large">No</el-radio>
                   <el-radio value="2" size="large">Unsure</el-radio>
@@ -90,7 +81,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Dogs?">
-                <el-radio-group v-model="form3.FriendlyWithDogs">
+                <el-radio-group v-model="form.FriendlyWithDogs">
                   <el-radio value="1" size="large">Yes</el-radio>
                   <el-radio value="0" size="large">No</el-radio>
                   <el-radio value="2" size="large">Unsure</el-radio>
@@ -98,7 +89,7 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Cats?">
-                <el-radio-group v-model="form3.FriendlyWithCats">
+                <el-radio-group v-model="form.FriendlyWithCats">
                   <el-radio value="1" size="large">Yes</el-radio>
                   <el-radio value="0" size="large">No</el-radio>
                   <el-radio value="2" size="large">Unsure</el-radio>
@@ -107,7 +98,7 @@
               </el-form-item>
               <el-form-item label="Adoption Date" style="width: 400px">
                 <el-date-picker
-                  v-model="form3.adoptionDate"
+                  v-model="form.adoptionDate"
                   type="date"
                   aria-label="Pick a date"
                   placeholder="Pick a date"
@@ -115,7 +106,7 @@
                 />
               </el-form-item>
               <el-form-item label="About your pet" style="width: 400px">
-                <el-input type="textarea" v-model="form3.aboutPet" />
+                <el-input type="textarea" v-model="form.aboutPet" />
               </el-form-item>
             </el-form>
           </el-col>
@@ -177,19 +168,13 @@ const beforeUpload: UploadProps['beforeUpload'] = (rawFile) => {
 const router = useRouter()
 // do not use same name with ref
 const form = reactive({
-  havePet: ''
-})
-const form2 = reactive({
   petType: '',
   petName: '',
   weight: '',
   ageYers: '',
   ageMonths: '',
   sex: '',
-  breed: ''
-})
-
-const form3 = reactive({
+  breed: '',
   micorchipped: '',
   spayed: '',
   houseTrained: '',
@@ -199,22 +184,6 @@ const form3 = reactive({
   adoptionDate: '',
   aboutPet: ''
 })
-
-// const handleUploadSuccess = (res, file) => {
-//   this.imageUrl = URL.createObjectURL(file.raw)
-// }
-// const beforeUpload = (file) => {
-//   const isJPG = file.type === 'image/jpeg'
-//   const isLt2M = file.size / 1024 / 1024 < 2
-
-//   if (!isJPG) {
-//     ElMessage.error('The image must be in JPG format!')
-//   }
-//   if (!isLt2M) {
-//     ElMessage.error('Image size cannot exceed 2MB!')
-//   }
-//   return isJPG && isLt2M
-// }
 </script>
 <style scoped>
 .avatar-uploader .avatar {
@@ -225,7 +194,6 @@ const form3 = reactive({
 
 .dashboard {
   padding: 20px;
-  /* background: #f2f2f2; */
 }
 .user-card {
   margin-bottom: 20px;
