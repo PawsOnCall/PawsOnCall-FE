@@ -61,21 +61,6 @@ const onAddPet = () => {
 const userId = userAuthStore().userInfo.userId
 console.log(userId)
 
-const userProfile = reactive({
-  name: 'Frank',
-  email: '',
-  addressLine1: '',
-  addressLine2: '',
-  city: '',
-  country: '',
-  photo: '',
-  phone: '',
-  postCode: '',
-  province: '',
-  emeContactName: '',
-  emeContactPhone: '',
-  userId: ''
-})
 const userDashboard = reactive({
   userId: '',
   pets: [],
