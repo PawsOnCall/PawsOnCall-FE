@@ -85,7 +85,11 @@ const OnviewEarnings = () => {
 }
 
 const OnEditProfile = () => {
-  router.push({ name: 'user-profile' })
+  if (props.isGroomer) {
+    router.push({ name: 'groomer-profile' })
+  } else {
+    router.push({ name: 'user-profile' })
+  }
 }
 </script>
 

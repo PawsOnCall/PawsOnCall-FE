@@ -1,6 +1,6 @@
 <template>
   <div class="groomer">
-    <template v-if="info.hasProfessionalBackground">
+    <template v-if="!info.hasProfessionalBackground">
       <div class="step1">
         <h2>Let's get you started</h2>
         <div class="subheading">Personal Information</div>

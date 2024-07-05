@@ -17,9 +17,9 @@
       <i class="el-icon-message"></i>
       <span slot="title">Orders</span>
     </el-menu-item>
-    <el-menu-item index="5" v-if="isGroomer">
+    <el-menu-item index="5" v-if="isGroomer" @click="onSetting">
       <i class="el-icon-picture"></i>
-      <span slot="title">Photos</span>
+      <span slot="title">Setting</span>
     </el-menu-item>
     <el-menu-item index="6" @click="onLogOut">
       <i class="el-icon-switch-button"></i>
@@ -69,6 +69,10 @@ const onOrders = () => {
 const onLogOut = () => {
   authStore.logout()
   router.push({ name: 'home' })
+}
+
+const onSetting = () => {
+  router.push({ name: 'groomer-setting' })
 }
 </script>
 

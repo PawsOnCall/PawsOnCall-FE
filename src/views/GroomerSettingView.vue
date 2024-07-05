@@ -3,13 +3,11 @@
     <el-row :gutter="20">
       <el-col :span="20">
         <el-row :gutter="20">
-          <el-col :span="8">
-            <UserCard
-              :isGroomer="true"
-              :user-info="{ name: groomerDashboard.name, photo: groomerDashboard.photo }"
-            />
+          <el-col :span="8"> </el-col>
+          <el-col :span="16">
+            <h4>Available Date</h4>
+            <div class=""></div>
           </el-col>
-          <el-col :span="16"> </el-col>
         </el-row>
       </el-col>
       <el-col :span="4">
@@ -21,7 +19,6 @@
 
 <script setup>
 import Sidebar from '@/components/Siderbar.vue'
-import UserCard from '@/components/UserCard.vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
@@ -69,7 +66,7 @@ getGroomerDashboard()
 <style scoped>
 .dashboard {
   padding: 20px;
-  background: #f2f2f2;
+  background: #fff;
 }
 .user-card {
   margin-bottom: 20px;

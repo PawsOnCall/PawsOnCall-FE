@@ -73,14 +73,7 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/UserDashboardView.vue')
     },
-    {
-      path: '/groomer-dashboard',
-      name: 'groomer-dashboard',
-      // route level code-splitting
-      // this generates a separate chunk (Groomer.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/GroomerDashboardView.vue')
-    },
+
     {
       path: '/add-pet',
       name: 'add-pet',
@@ -130,13 +123,14 @@ const router = createRouter({
       component: () => import('../views/UserOrderDetailView.vue')
     },
     {
-      path: '/receive-payment',
-      name: 'receive-payment',
+      path: '/groomer-dashboard',
+      name: 'groomer-dashboard',
       // route level code-splitting
-      // this generates a separate chunk (Payment.[hash].js) for this route
+      // this generates a separate chunk (Groomer.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ReceivePaymentView.vue')
+      component: () => import('../views/GroomerDashboardView.vue')
     },
+
     {
       path: '/groomer-profile',
       name: 'groomer-profile',
@@ -146,12 +140,69 @@ const router = createRouter({
       component: () => import('../views/GroomerProfileView.vue')
     },
     {
+      path: '/groomer-address',
+      name: 'groomer-address',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerAddress.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerAddressView.vue')
+    },
+    {
+      path: '/groomer-service',
+      name: 'groomer-service',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerService.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerServiceView.vue')
+    },
+    {
+      path: '/groomer-pet-preferences',
+      name: 'groomer-pet-preferences',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerPetPreferences.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerPetPreferencesView.vue')
+    },
+    {
+      path: '/groomer-description',
+      name: 'groomer-description',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerDescription.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerDescriptionView.vue')
+    },
+    {
       path: '/earning-history',
       name: 'earning-history',
       // route level code-splitting
       // this generates a separate chunk (EarningHistory.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/EarningHistoryView.vue')
+    },
+    {
+      path: '/receive-payment',
+      name: 'receive-payment',
+      // route level code-splitting
+      // this generates a separate chunk (Payment.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/ReceivePaymentView.vue')
+    },
+
+    {
+      path: '/groomer-setting',
+      name: 'groomer-setting',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerSetting.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerSettingView.vue')
+    },
+    {
+      path: '/groomer-orders',
+      name: 'groomer-orders',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerOrders.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerOrdersView.vue')
     },
     {
       path: '/groomer-list',
@@ -168,14 +219,6 @@ const router = createRouter({
       // this generates a separate chunk (GroomerDetail.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/GroomerDetailView.vue')
-    },
-    {
-      path: '/groomer-orders',
-      name: 'groomer-orders',
-      // route level code-splitting
-      // this generates a separate chunk (GroomerOrders.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/GroomerOrdersView.vue')
     }
   ]
 })

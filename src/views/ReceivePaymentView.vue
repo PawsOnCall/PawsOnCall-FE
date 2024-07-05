@@ -3,10 +3,10 @@
     <el-row :gutter="20">
       <el-col :span="20">
         <el-row :gutter="20">
-          <el-col :span="8">
-            <UserCard :isGroomer="true" />
+          <el-col :span="4">
+            <!-- <UserCard :isGroomer="false" /> -->
           </el-col>
-          <el-col :span="16">
+          <el-col :span="20">
             <div class="new-card-info">
               <h4>Receive Payments</h4>
               <p class="des">
@@ -14,7 +14,7 @@
               </p>
               <el-form :inline="true" :size="'large'">
                 <el-form-item label="Name on Card" style="width: 600px">
-                  <el-input v-model="cardForm.name" placeholder="Name on Card"></el-input
+                  <el-input v-model="cardForm.cardName" placeholder="Name on Card"></el-input
                 ></el-form-item>
                 <el-form-item label="Card Number" style="width: 600px">
                   <el-input v-model="cardForm.cardNumber" placeholder="Card Number"></el-input>
@@ -22,16 +22,18 @@
                 <el-form-item label="Expiration" style="width: 300px">
                   <el-input v-model="cardForm.expiration" placeholder="MM//YY"></el-input>
                 </el-form-item>
-                <el-form-item label="CVV" style="width: 270px">
-                  <el-input v-model="cardForm.cvv" placeholder="CVV"></el-input>
+                <el-form-item label="CVC" style="width: 270px">
+                  <el-input v-model="cardForm.cvc" placeholder="CVC"></el-input>
                 </el-form-item>
                 <el-form-item label="Address Line 1" style="width: 600px">
-                  <el-input v-model="cardForm.address1" placeholder="Address Line 1"> </el-input>
+                  <el-input v-model="cardForm.addressLine1" placeholder="Address Line 1">
+                  </el-input>
                 </el-form-item>
                 <el-form-item label="Address Line 2" style="width: 600px">
-                  <el-input v-model="cardForm.address2" placeholder="Address Line 2"> </el-input>
+                  <el-input v-model="cardForm.addressLine2" placeholder="Address Line 2">
+                  </el-input>
                 </el-form-item>
-                <el-form-item label="City" style="width: 200px">
+                <el-form-item label="City" style="width: 300px">
                   <el-select v-model="cardForm.city">
                     <el-option label="Vancouver" value="Vancouver"></el-option>
                     <el-option label="Richmond" value="Richmond"></el-option>
@@ -45,11 +47,16 @@
                     <el-option label="Surrey" value="Surrey"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="Zip" style="width: 200px">
-                  <el-input v-model="cardForm.zip" placeholder="zip"> </el-input>
+                <el-form-item label="postCode" style="width: 200px">
+                  <el-input v-model="cardForm.postCode" placeholder="postCode"> </el-input>
                 </el-form-item>
                 <el-form-item style="width: 800px">
-                  <el-button style="margin: 20px auto" round type="primary" size="large" @click=""
+                  <el-button
+                    style="margin: 20px auto"
+                    round
+                    type="primary"
+                    size="large"
+                    @click="savePayment"
                     >Save Card</el-button
                   ></el-form-item
                 >
@@ -59,7 +66,7 @@
         </el-row>
       </el-col>
       <el-col :span="4">
-        <Sidebar :isGroomer="true" />
+        <Sidebar :isGroomer="false" />
       </el-col>
     </el-row>
   </div>
@@ -71,19 +78,86 @@ import UserCard from '@/components/UserCard.vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-
+import axios from 'axios'
+import { userAuthStore } from '@/stores/userAuthStore'
 const router = useRouter()
 
+const userId = userAuthStore().userInfo.userId
+console.log(userId)
 const cardForm = reactive({
-  name: '',
+  cardName: '',
   cardNumber: '',
   expiration: '',
-  cvv: '',
-  address1: '',
-  address2: '',
+  cvc: '',
+  addressLine1: '',
+  addressLine2: '',
   city: '',
-  zip: ''
+  postCode: '',
+  country: 'Canada',
+  province: 'BC',
+  userId: userId,
+  id: ''
 })
+const getUserPayment = async function () {
+  try {
+    const userId = userAuthStore().userInfo.userId
+    axios.get(`/api/api/payment/getPayment?userId=${userId}`).then((response) => {
+      console.log(response.data)
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message
+        })
+      }
+      if (response.data.data === null) {
+        return
+      }
+      cardForm.id = response.data.data.id
+      cardForm.cardName = response.data.data.cardName
+      cardForm.cardNumber = response.data.data.cardNumber
+      cardForm.expiration = response.data.data.expiration
+
+      cardForm.cvc = response.data.data.cvc
+      cardForm.addressLine1 = response.data.data.addressLine1
+      cardForm.addressLine2 = response.data.data.addressLine2
+
+      cardForm.city = response.data.data.city
+      cardForm.postCode = response.data.data.postCode
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+getUserPayment()
+
+const savePayment = async function () {
+  try {
+    axios
+      .post(`/api/api/payment/savePayment`, {
+        cardName: cardForm.cardName,
+        cardNumber: cardForm.cardNumber,
+        expiration: cardForm.expiration,
+        cvc: cardForm.cvc,
+        addressLine1: cardForm.addressLine1,
+        addressLine2: cardForm.addressLine2,
+        city: cardForm.city,
+        postCode: cardForm.postCode,
+        country: cardForm.country,
+        province: cardForm.province,
+        userId: cardForm.userId,
+        id: cardForm.id
+      })
+      .then((response) => {
+        console.log(response.data)
+        ElMessage.success('Payment saved successfully')
+        setTimeout(() => {
+          router.push({ name: 'groomer-dashboard' })
+        }, 1500)
+      })
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
 <style scoped>
