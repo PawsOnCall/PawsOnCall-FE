@@ -3,10 +3,10 @@
     <el-row :gutter="20">
       <el-col :span="20">
         <el-row :gutter="20">
-          <el-col :span="4">
-            <UserCard :isGroomer="false" />
+          <el-col :span="2">
+            <!-- <UserCard :isGroomer="false" /> -->
           </el-col>
-          <el-col :span="20">
+          <el-col :span="22">
             <div class="new-card-info">
               <h4>Order History</h4>
               <el-table :data="orders.data" style="width: 100%" @row-click="handleRowClick">
@@ -33,25 +33,33 @@ import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 const handleRowClick = (row) => {
   console.log(row)
   console.log(row.id)
   router.push({ name: 'user-order-detail', query: { orderId: row.id } })
 }
+
+const userId = userAuthStore().userInfo.userId
+console.log(userId)
 const orders = reactive({
-  userId: '',
+  userId: userId,
   data: []
 })
-
 const getOrders = async function () {
   try {
-    axios.get(`/api/api/order/getOrders?userId=${102}&userType=customer`).then((response) => {
+    axios.get(`/api/api/order/getOrders?userId=${userId}&userType=customer`).then((response) => {
       console.log(response.data)
-      orders.data = response.data.data
-      // TODO: userId
-      // const userId = userAuthStore().userInfo.userId
-      // axios.get(`/api/api/order/getOrders?userId=${userId}`).then((response) => {
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message || 'Error fetching data'
+        })
+      }
+      if (response.data.data && response.data.data.data !== null) {
+        orders.data = response.data.data
+      }
     })
   } catch (error) {
     console.error(error)

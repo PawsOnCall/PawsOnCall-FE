@@ -20,9 +20,7 @@
           <span>$0.00</span>
         </div>
         <div>
-          <el-button type="default" @click="OnReceivePayment"
-            >Manage Methods of Receving Payments
-          </el-button>
+          <el-button type="default" @click="OnReceivePayment">Receving Payments </el-button>
         </div>
         <div>
           <el-button type="default" @click="OnviewEarnings">View Earnings</el-button>
@@ -35,12 +33,10 @@
           <p class="tips">Funds from past bookings begin processing 48 hours after they end.</p>
         </div>
         <div>
-          <el-button type="default" @click="modifyPaymentMethod"
-            >Add or Modify a Payment Method</el-button
-          >
+          <el-button type="default" @click="modifyPaymentMethod"> Payment Method</el-button>
         </div>
         <div>
-          <el-button type="default" @click="viewPayments">View Payments</el-button>
+          <el-button type="default" @click="viewPayments">Payments History</el-button>
         </div>
       </template>
     </div>

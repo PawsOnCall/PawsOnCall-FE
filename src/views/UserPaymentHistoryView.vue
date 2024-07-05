@@ -9,7 +9,7 @@
           <el-col :span="20">
             <div class="new-card-info">
               <h4>Payments History</h4>
-              <el-table :data="orders.data" border style="width: 100%">
+              <el-table :data="orders.data" style="width: 100%">
                 <el-table-column prop="serviceTime" label="Date" width="260" />
                 <el-table-column prop="id" label="Order Number" width="180" />
                 <el-table-column prop="providerName" label="Groomer" />
@@ -32,21 +32,28 @@ import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 
 const orders = reactive({
   userId: '',
   data: []
 })
-
+const userId = userAuthStore().userInfo.userId
+console.log(userId)
 const getOrders = async function () {
   try {
-    axios.get(`/api/api/order/getOrders?userId=${102}&userType=customer`).then((response) => {
+    axios.get(`/api/api/order/getOrders?userId=${userId}&userType=customer`).then((response) => {
       console.log(response.data)
-      orders.data = response.data.data
-      // TODO: userId
-      // const userId = userAuthStore().userInfo.userId
-      // axios.get(`/api/api/order/getOrders?userId=${userId}`).then((response) => {
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message || 'Error fetching data'
+        })
+      }
+      if (response.data.data && response.data.data.data !== null) {
+        orders.data = response.data.data
+      }
     })
   } catch (error) {
     console.error(error)

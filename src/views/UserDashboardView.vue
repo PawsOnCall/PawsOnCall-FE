@@ -17,7 +17,7 @@
             </div> -->
             <div class="pets-section">
               <h2>Your Pets</h2>
-              <template v-if="userDashboard.pets.length > 1">
+              <template v-if="userDashboard.pets.length > 0">
                 <div class="petcard" v-for="(pet, i) in userDashboard.pets" :key="i">
                   <div class="pet-name">Pet Name:{{ pet.name }}</div>
                   <img class="pet-photo" :src="pet.photo" />
@@ -62,7 +62,7 @@ const userId = userAuthStore().userInfo.userId
 console.log(userId)
 
 const userDashboard = reactive({
-  userId: '',
+  userId: userId,
   pets: [],
   balance: 0,
   firstName: '',
@@ -72,22 +72,24 @@ const userDashboard = reactive({
 })
 const getUserDashboard = async function () {
   try {
-    axios.get(`/api/api/customer/dashboard?userId=${102}`).then((response) => {
-      // TODO: userId
-      // const userId = userAuthStore().userInfo.userId
-      // axios.get(`/api/api/customer/dashboard?userId=${userId}`).then((response) => {
+    const userId = userAuthStore().userInfo.userId
+    axios.get(`/api/api/customer/dashboard?userId=${userId}`).then((response) => {
       console.log(response.data)
-
-      userDashboard.pets = response.data.data.pets
-      userDashboard.balance = response.data.data.balance
-      userDashboard.firstName = response.data.data.firstName
-      userDashboard.photo = response.data.data.photo
-
-      userDashboard.lastName = response.data.data.lastName
-
-      userDashboard.name = response.data.data.firstName + ' ' + response.data.data.lastName
-
-      localStorage.setItem('userDashboard', JSON.stringify(userDashboard))
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message || 'Error fetching data'
+        })
+      }
+      if (response.data.data && response.data.data.data !== null) {
+        userDashboard.pets = response.data.data.pets
+        userDashboard.balance = response.data.data.balance
+        userDashboard.firstName = response.data.data.firstName
+        userDashboard.photo = response.data.data.photo
+        userDashboard.lastName = response.data.data.lastName
+        userDashboard.name = response.data.data.firstName + ' ' + response.data.data.lastName
+        localStorage.setItem('userDashboard', JSON.stringify(userDashboard))
+      }
     })
   } catch (error) {
     console.error(error)

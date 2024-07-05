@@ -83,6 +83,8 @@ import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
 const router = useRouter()
 
+const userId = userAuthStore().userInfo.userId
+console.log(userId)
 const cardForm = reactive({
   cardName: '',
   cardNumber: '',
@@ -94,17 +96,23 @@ const cardForm = reactive({
   postCode: '',
   country: 'Canada',
   province: 'BC',
-  userId: 102,
+  userId: userId,
   id: ''
 })
-
 const getUserPayment = async function () {
   try {
-    axios.get(`/api/api/payment/getPayment?userId=${102}`).then((response) => {
-      // TODO: userId
-      // const userId = userAuthStore().userInfo.userId
-      // axios.get(`/api/api/customer/getPayment?userId=${userId}`).then((response) => {
+    const userId = userAuthStore().userInfo.userId
+    axios.get(`/api/api/payment/getPayment?userId=${userId}`).then((response) => {
       console.log(response.data)
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message
+        })
+      }
+      if (response.data.data === null) {
+        return
+      }
       cardForm.id = response.data.data.id
       cardForm.cardName = response.data.data.cardName
       cardForm.cardNumber = response.data.data.cardNumber

@@ -165,6 +165,8 @@ import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
 import type { UploadFile } from 'element-plus'
 import { genFileId } from 'element-plus'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
+import { userAuthStore } from '@/stores/userAuthStore'
+
 const upload = ref<UploadInstance>()
 
 const fileList = ref<UploadUserFile[]>([])
@@ -221,13 +223,14 @@ const convertBlobToBase64 = (blob) => {
     reader.readAsDataURL(blob)
   })
 }
-
+const userId = userAuthStore().userInfo.userId
+console.log(userId)
 const savePet = () => {
   console.log(form)
   console.log(fileList.value[0].url)
   axios
     .post(`/api/api/customer/savePet`, {
-      userId: 102, //TODO: replace with actual user id
+      userId: userId,
       type: form.petType,
       name: form.petName,
       weight: form.weight,

@@ -52,15 +52,15 @@
       </el-form-item>
     </el-form>
 
-    <div>-or-</div>
+    <!-- <div>-or-</div>
     <el-form label-width="auto" :size="'large'">
       <el-form-item>
         <el-button type="primary" style="margin-left: 24px" round @click="onSubmitGoogle"
           >Continue with Google</el-button
         >
       </el-form-item>
-    </el-form>
-    <div class="tips">Already have a Rover account? <a @click="onSignin">Sign in now.</a></div>
+    </el-form> -->
+    <div class="tips">Already have a PawsOnCall account? <a @click="onSignin">Sign in now.</a></div>
   </div>
 </template>
 
@@ -90,7 +90,6 @@ import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import axios from '../api/axios'
-import md5 from 'md5-hash'
 const router = useRouter()
 const form = reactive({
   userType: 'customer',
@@ -135,13 +134,12 @@ const onSubmit = () => {
       lastName: form.lastName,
       email: form.email,
       phone: form.phone,
-      password: md5(form.password),
+      password: form.password,
       city: form.city,
       postcode: form.postcode
     })
     .then((res) => {
-      console.log(res)
-      if (res.data) {
+      if (res.data.code === 200) {
         ElMessage({
           type: 'success',
           message: `Sign up successful!`

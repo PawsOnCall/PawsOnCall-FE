@@ -142,6 +142,7 @@ import Sidebar from '@/components/Siderbar.vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { userAuthStore } from '@/stores/userAuthStore'
 import { ref } from 'vue'
 import { ElMessage, UploadUserFile } from 'element-plus'
 import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue'
@@ -154,6 +155,7 @@ const router = useRouter()
 const disabled = ref(false)
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
+
 const convertBlobToBase64 = (blob) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
@@ -185,8 +187,11 @@ const handlePictureCardPreview = (file: UploadFile) => {
   dialogImageUrl.value = file.url!
   dialogVisible.value = true
 }
+const userId = userAuthStore().userInfo.userId
+console.log(userId)
+
 const userProfile = reactive({
-  userId: 102, // TODO: replace with userId
+  userId: userId,
   email: '',
   addressLine1: '',
   addressLine2: '',
@@ -210,36 +215,43 @@ const saveProfile = () => {
       setTimeout(() => {
         router.push({ name: 'user-dashboard' })
       }, 1500)
+    } else {
+      ElMessage.error('Error saving profile')
     }
   })
 }
 
 const getUserProfile = async function () {
   try {
-    axios.get(`/api/api/customer/getProfile?userId=${102}`).then((response) => {
-      // TODO: userId
-      // const userId = userAuthStore().userInfo.userId
-      // axios.get(`/api/api/customer/getProfile?userId=${userId}`).then((response) => {
+    axios.get(`/api/api/customer/getProfile?userId=${userId}`).then((response) => {
       console.log(response.data)
-      userProfile.email = response.data.data.email
-      userProfile.addressLine1 = response.data.data.addressLine1
-      userProfile.addressLine2 = response.data.data.addressLine2
-      userProfile.city = response.data.data.city
-      // userProfile.country = response.data.data.country
-
-      userProfile.phone = response.data.data.phone
-      userProfile.postCode = response.data.data.postCode
-      // userProfile.province = response.data.data.province
-      userProfile.emeContactName = response.data.data.emeContactName
-      userProfile.emeContactPhone = response.data.data.emeContactPhone
-      userProfile.userId = response.data.data.userId
-      userProfile.photo = response.data.data.photo
-
-      if (response.data.data.photo) {
-        fileList.value.push({
-          name: 'photo',
-          url: response.data.data.photo
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message
         })
+      }
+      if (response.data.data && response.data.data.data !== null) {
+        userProfile.email = response.data.data.email
+        userProfile.addressLine1 = response.data.data.addressLine1
+        userProfile.addressLine2 = response.data.data.addressLine2
+        userProfile.city = response.data.data.city
+        // userProfile.country = response.data.data.country
+
+        userProfile.phone = response.data.data.phone
+        userProfile.postCode = response.data.data.postCode
+        // userProfile.province = response.data.data.province
+        userProfile.emeContactName = response.data.data.emeContactName
+        userProfile.emeContactPhone = response.data.data.emeContactPhone
+        userProfile.userId = response.data.data.userId
+        userProfile.photo = response.data.data.photo
+
+        if (response.data.data.photo) {
+          fileList.value.push({
+            name: 'photo',
+            url: response.data.data.photo
+          })
+        }
       }
     })
   } catch (error) {
