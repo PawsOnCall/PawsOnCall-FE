@@ -48,6 +48,7 @@
 </template>
 
 <script lang="ts" setup>
+import { fa } from 'element-plus/es/locale'
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 

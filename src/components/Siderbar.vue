@@ -17,7 +17,7 @@
       <i class="el-icon-message"></i>
       <span slot="title">Orders</span>
     </el-menu-item>
-    <el-menu-item index="5">
+    <el-menu-item index="5" v-if="isGroomer">
       <i class="el-icon-picture"></i>
       <span slot="title">Photos</span>
     </el-menu-item>

@@ -122,6 +122,14 @@ const router = createRouter({
       component: () => import('../views/UserOrdersView.vue')
     },
     {
+      path: '/user-order-detail',
+      name: 'user-order-detail',
+      // route level code-splitting
+      // this generates a separate chunk (UserOrderDetail.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/UserOrderDetailView.vue')
+    },
+    {
       path: '/receive-payment',
       name: 'receive-payment',
       // route level code-splitting
