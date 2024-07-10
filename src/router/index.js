@@ -205,6 +205,14 @@ const router = createRouter({
       component: () => import('../views/GroomerOrdersView.vue')
     },
     {
+      path: '/groomer-order-detail',
+      name: 'groomer-order-detail',
+      // route level code-splitting
+      // this generates a separate chunk (GroomerOrderDetail.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/GroomerOrderDetailView.vue')
+    },
+    {
       path: '/groomer-list',
       name: 'groomer-list',
       // route level code-splitting

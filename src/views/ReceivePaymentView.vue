@@ -66,7 +66,7 @@
         </el-row>
       </el-col>
       <el-col :span="4">
-        <Sidebar :isGroomer="false" />
+        <Sidebar :isGroomer="true" />
       </el-col>
     </el-row>
   </div>
@@ -83,7 +83,6 @@ import { userAuthStore } from '@/stores/userAuthStore'
 const router = useRouter()
 
 const userId = userAuthStore().userInfo.userId
-console.log(userId)
 const cardForm = reactive({
   cardName: '',
   cardNumber: '',
@@ -108,6 +107,7 @@ const getUserPayment = async function () {
           type: 'error',
           message: response.data.message
         })
+        return
       }
       if (response.data.data === null) {
         return

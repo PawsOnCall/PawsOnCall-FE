@@ -21,6 +21,9 @@
           <el-form-item label="Email:">
             <el-input v-model="form.email" clearable />
           </el-form-item>
+          <el-form-item label="Password:">
+            <el-input v-model="form.password" type="password" show-password />
+          </el-form-item>
           <el-form-item label="Mailing Address:">
             <el-input v-model="form.mailing" clearable />
           </el-form-item>
@@ -55,14 +58,14 @@
           <el-form-item
             label=" What type of pet do you groom/bathe?(Select one or more that applies)"
           >
-            <!-- <el-checkbox-group v-model="form.petType">
-            <el-checkbox value="Dog" name="type"> Dog </el-checkbox>
-            <el-checkbox value="Cat" name="type"> Cat </el-checkbox>
-          </el-checkbox-group> -->
-            <el-radio-group v-model="form.petType" class="ml-4">
+            <el-checkbox-group v-model="form.petType">
+              <el-checkbox value="Dog" name="type"> Dog </el-checkbox>
+              <el-checkbox value="Cat" name="type"> Cat </el-checkbox>
+            </el-checkbox-group>
+            <!-- <el-radio-group v-model="form.petType" class="ml-4">
               <el-radio value="Dog" size="large">Dog</el-radio>
               <el-radio value="Cat" size="large">Cat</el-radio>
-            </el-radio-group>
+            </el-radio-group> -->
           </el-form-item>
           <el-form-item
             label="Have you got any groomming certification?(Anything related to the grooming industry)"
@@ -255,12 +258,13 @@ const form = reactive({
   firstName: '',
   lastName: '',
   email: '',
+  password: ``,
   mailing: '',
   groomingExperience: '',
   phone: '',
   role: '',
   groomedCount: 0,
-  petType: '',
+  petType: [],
   hasCertification: '',
   certification: '',
   availabilityType: '',
@@ -280,6 +284,7 @@ const submitForm = () => {
     !form.firstName ||
     !form.lastName ||
     !form.email ||
+    !form.password ||
     !form.mailing ||
     !form.groomingExperience ||
     !form.phone
@@ -289,7 +294,7 @@ const submitForm = () => {
       message: `Please fill in all the fields about your Personal Information`
     })
   }
-  if (!form.role || !form.petType || !form.availabilityType) {
+  if (!form.role || !form.petType.length || !form.availabilityType) {
     ElMessage({
       type: 'error',
       message: `Please fill in all the fields about your Professional Background.`
@@ -302,8 +307,27 @@ const submitForm = () => {
     })
   }
   // submit form
+
   axios
-    .post('/api/api/groomer/register', form)
+    .post('/api/api/groomer/register', {
+      firstName: form.firstName,
+      lastName: form.lastName,
+      email: form.email,
+      password: form.password,
+      mailing: form.mailing,
+      groomingExperience: form.groomingExperience,
+      phone: form.phone,
+      role: form.role,
+      groomedCount: form.groomedCount,
+      petType: form.petType.join(',') || '',
+      hasCertification: form.hasCertification,
+      certification: form.certification,
+      availabilityType: form.availabilityType,
+      selfIntroduction: form.selfIntroduction,
+      photo: form.photo,
+      facebook: form.facebook,
+      instagram: form.instagram
+    })
     .then((res) => {
       console.log(res)
       if (res.data.code === 200) {

@@ -37,7 +37,8 @@ const groomerDashboard = reactive({
   firstName: '',
   lastName: '',
   name: '',
-  photo: ''
+  photo: '',
+  upcomingEarning: 0
 })
 const getGroomerDashboard = async function () {
   try {
@@ -54,6 +55,7 @@ const getGroomerDashboard = async function () {
         groomerDashboard.balance = response.data.data.balance
         groomerDashboard.firstName = response.data.data.firstName
         groomerDashboard.photo = response.data.data.photo
+        groomerDashboard.upcomingEarning = response.data.data.upcomingEarning
         groomerDashboard.lastName = response.data.data.lastName
         groomerDashboard.name = response.data.data.firstName + ' ' + response.data.data.lastName
         localStorage.setItem('groomerDashboard', JSON.stringify(groomerDashboard))

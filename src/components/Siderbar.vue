@@ -4,6 +4,8 @@
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
+    router="true"
+    default-active="1"
   >
     <el-menu-item index="1" @click="onDashbord">
       <i class="el-icon-menu"></i>
@@ -31,9 +33,12 @@
 <script setup>
 import { defineProps } from 'vue'
 
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { userAuthStore } from '../stores/userAuthStore'
 const authStore = userAuthStore()
+const route = useRoute()
+const currentPath = route.path
+console.log(currentPath)
 
 const props = defineProps({
   isGroomer: {

@@ -73,7 +73,9 @@
                 </template>
               </el-upload>
               <el-divider />
-              <el-button type="primary" style="width: 300px" @click="saveProfile">Save</el-button>
+              <el-button type="primary" style="width: 300px" @click="saveProfile" size="large"
+                >Save</el-button
+              >
               <!-- <h5>Delete Account</h5>
               <el-button type="danger" @click="deleteProfile" size="large" style="width: 600px"
                 >Delete My Profile</el-button

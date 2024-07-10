@@ -2,16 +2,39 @@
   <div class="dashboard">
     <el-row :gutter="20">
       <el-col :span="20">
-        <el-row :gutter="20">
-          <el-col :span="8"> </el-col>
-          <el-col :span="16">
-            <h4>Available Date</h4>
-            <div class=""></div>
-          </el-col>
-        </el-row>
+        <div class="availability-calendar">
+          <h2>Your availability for the next 2 weeks</h2>
+          <p>
+            Want more requests that are right for you?<br />
+            Confirm your availability to highlight your profile in search results. Deselect any days
+            you’re <strong>not</strong> available.
+          </p>
+          <div class="calendar">
+            <div class="calendar-row header-row">
+              <div class="calendar-cell" v-for="(day, index) in daysOfWeek" :key="index">
+                {{ day }}
+              </div>
+            </div>
+            <div class="calendar-row availability-row">
+              <div
+                class="calendar-cell"
+                v-for="(date, index) in availabilityDates"
+                :key="index"
+                :class="{ available: isAvailable(index), disabled: !date }"
+                @click="toggleAvailability(index)"
+              >
+                {{ formatDisplayDate(date) }}
+              </div>
+            </div>
+          </div>
+          <div class="footer">
+            <p>Last updated a day ago</p>
+            <button @click="confirmAvailability">Confirm Availability</button>
+          </div>
+        </div>
       </el-col>
       <el-col :span="4">
-        <Sidebar :isGroomer="true" />
+        <Sidebar :isGroomer="false" />
       </el-col>
     </el-row>
   </div>
@@ -19,81 +42,162 @@
 
 <script setup>
 import Sidebar from '@/components/Siderbar.vue'
-import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ref } from 'vue'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
-const router = useRouter()
+import { ElMessage } from 'element-plus'
 const userId = userAuthStore().userInfo.userId
-console.log(userId)
-const groomerDashboard = reactive({
-  userId: userId,
-  pets: [],
-  balance: 0,
-  firstName: '',
-  lastName: '',
-  name: '',
-  photo: ''
-})
-const getGroomerDashboard = async function () {
+// console.log(userId)
+// const userId = 103
+// Days of the week for header row
+const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+// Function to generate next 14 days
+const generateNextTwoWeeks = () => {
+  const dates = []
+  const today = new Date()
+  for (let i = 0; i < 14; i++) {
+    const nextDate = new Date(today)
+    nextDate.setDate(today.getDate() + i)
+    const formattedDate = nextDate.toISOString().split('T')[0] // "YYYY-MM-DD"
+    dates.push(formattedDate)
+  }
+  return dates
+}
+
+// Array to hold availability dates for the next two weeks
+const availabilityDates = generateNextTwoWeeks()
+
+// Reactive state to store availability status of each date
+const available = ref(Array(availabilityDates.length).fill(false))
+
+// Function to check if a date is available
+const isAvailable = (index) => {
+  return available.value[index]
+}
+
+// Function to toggle availability status of a date
+const toggleAvailability = (index) => {
+  available.value[index] = !available.value[index]
+}
+
+// Function to format display date (e.g., "MM/DD")
+const formatDisplayDate = (date) => {
+  const [year, month, day] = date.split('-')
+  return `${month}/${day}`
+}
+
+// Function to fetch available dates for the user
+const getAvailableDates = async () => {
   try {
-    const userId = userAuthStore().userInfo.userId
-    axios.get(`/api/api/groomer/dashboard?userId=${userId}`).then((response) => {
-      console.log(response.data)
-      if (response.data.code !== 200) {
-        ElMessage({
-          type: 'error',
-          message: response.data.message || 'Error fetching data'
-        })
-      }
-      if (response.data.data && response.data.data.data !== null) {
-        groomerDashboard.balance = response.data.data.balance
-        groomerDashboard.firstName = response.data.data.firstName
-        groomerDashboard.photo = response.data.data.photo
-        groomerDashboard.lastName = response.data.data.lastName
-        groomerDashboard.name = response.data.data.firstName + ' ' + response.data.data.lastName
-        localStorage.setItem('groomerDashboard', JSON.stringify(groomerDashboard))
-      }
-    })
+    const response = await axios.get(`/api/api/groomer/getAvailableDate?userId=${userId}`)
+    if (response.data.code !== 200) {
+      ElMessage({
+        type: 'error',
+        message: response.data.message || 'Error fetching data'
+      })
+    } else {
+      const fetchedDates = response.data.data.map((item) => item.availableDate.split('T')[0])
+      console.log(fetchedDates)
+      // Set initial availability status to true (selected) for fetched dates
+      availabilityDates.forEach((date, index) => {
+        available.value[index] = fetchedDates.includes(date)
+      })
+    }
   } catch (error) {
-    console.error(error)
+    ElMessage({
+      type: 'error',
+      message: error || 'Error fetching available dates:'
+    })
   }
 }
-getGroomerDashboard()
+
+const confirmAvailability = () => {
+  const selectedDates = availabilityDates.filter((date, index) => available.value[index])
+  const availabilityArray = selectedDates.map((date) => ({ userId, availableDate: date }))
+
+  axios
+    .post(`/api/api/groomer/setAvailableDate`, availabilityArray)
+    .then((response) => {
+      if (response.data.code === 200) {
+        ElMessage({
+          type: 'success',
+          message: ' Successfully set your available date'
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+// Call getAvailableDates when component is mounted to fetch initial data
+// onMounted(() => {
+getAvailableDates()
+// })
 </script>
 
 <style scoped>
-.dashboard {
+.availability-calendar {
   padding: 20px;
-  background: #fff;
-}
-.user-card {
-  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-.refer {
-  padding: 20px;
-  border: 1px solid #ebeef5;
-  border-radius: 4px;
-  background: #fff;
-  margin-bottom: 20px;
+.calendar {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  gap: 10px;
 }
-.pets-section {
-  padding: 20px;
-  border: 1px solid #ebeef5;
-  border-radius: 4px;
-  background: #fff;
+
+.calendar-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
 }
-.add-pet-card {
+
+.calendar-cell {
   text-align: center;
-  border: 2px dashed #dcdfe6;
-  padding: 20px;
-}
-.add-pet {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
   cursor: pointer;
 }
-.add-pet i {
-  font-size: 40px;
+
+.header-row .calendar-cell {
+  font-weight: bold;
+}
+
+.availability-row .calendar-cell.disabled {
+  background-color: transparent;
+  cursor: default;
+}
+
+.availability-row .calendar-cell.available {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
 }
 </style>

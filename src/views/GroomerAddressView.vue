@@ -19,28 +19,31 @@
                 <el-form-item label="County:" style="width: 300px">
                   <el-input v-model="groomerProfile.country" clearable />
                 </el-form-item>
+                <el-form-item label="Province:" style="width: 300px">
+                  <el-input v-model="groomerProfile.areaLevel1" clearable />
+                </el-form-item>
+                <el-form-item label="City:" style="width: 300px">
+                  <el-input v-model="groomerProfile.locality" clearable />
+                </el-form-item>
                 <el-form-item label="Street:" style="width: 300px">
                   <el-input v-model="groomerProfile.street" clearable />
                 </el-form-item>
                 <el-form-item label="Street Number:" style="width: 300px">
                   <el-input v-model="groomerProfile.streetNumber" clearable />
                 </el-form-item>
-                <el-form-item label="Locality:" style="width: 300px">
-                  <el-input v-model="groomerProfile.locality" clearable />
-                </el-form-item>
                 <el-form-item label="Postal Code:" style="width: 300px">
                   <el-input v-model="groomerProfile.postCode" clearable />
                 </el-form-item>
-                <el-form-item label="Administratvie area level 1:" style="width: 300px">
+                <!-- <el-form-item label="Administratvie area level 1:" style="width: 300px">
                   <el-input v-model="groomerProfile.areaLevel1" clearable />
                 </el-form-item>
                 <el-form-item label="Administratvie area level 2:" style="width: 300px">
                   <el-input v-model="groomerProfile.areaLevel2" clearable />
-                </el-form-item>
-                <el-button type="primary" style="width: 300px" @click="saveProfile"
-                  >Change Address</el-button
-                >
+                </el-form-item> -->
               </el-form>
+              <el-button type="primary" style="width: 300px" @click="saveProfile" size="large"
+                >Change Address</el-button
+              >
             </div>
           </el-col>
         </el-row>
