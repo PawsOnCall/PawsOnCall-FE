@@ -4,7 +4,8 @@ export const userAuthStore = defineStore('auth', {
   state: () => ({
     isLogin: false,
     userInfo: {
-      userId: ''
+      userId: '',
+      userType: ''
     }
   }),
   actions: {

@@ -81,6 +81,7 @@ const form = reactive({
   username: '',
   password: ''
 })
+
 const onSubmit = async () => {
   console.log('submit!')
   if (!form.username) {
@@ -109,10 +110,18 @@ const onSubmit = async () => {
             .get(`/api/api/account/getUserInfo?email=${form.username}`)
             .then((response) => {
               authStore.login(response.data.data)
-              if (response.data.data.userType === 'customer') {
-                router.push({ name: 'user-dashboard' })
+
+              const redirect = router.currentRoute.value.query.redirect
+              const groomerId = redirect ? redirect.split('=')[1] : null
+
+              if (redirect) {
+                router.push({ path: redirect, query: { groomerId } })
               } else {
-                router.push({ name: 'groomer-dashboard' })
+                if (response.data.data.userType === 'customer') {
+                  router.push({ name: 'user-dashboard' })
+                } else {
+                  router.push({ name: 'groomer-dashboard' })
+                }
               }
             })
             .catch((error) => {

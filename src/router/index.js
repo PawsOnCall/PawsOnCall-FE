@@ -227,6 +227,14 @@ const router = createRouter({
       // this generates a separate chunk (GroomerDetail.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/GroomerDetailView.vue')
+    },
+    {
+      path: '/confirm-groomer',
+      name: 'confirm-groomer',
+      // route level code-splitting
+      // this generates a separate chunk (ConfirmGroomer.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/ConfirmGroomerView.vue')
     }
   ]
 })

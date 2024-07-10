@@ -4,8 +4,7 @@
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
-    router="true"
-    default-active="1"
+    :default-active="defaultActive"
   >
     <el-menu-item index="1" @click="onDashbord">
       <i class="el-icon-menu"></i>
@@ -31,14 +30,30 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 
 import { useRouter, useRoute } from 'vue-router'
 import { userAuthStore } from '../stores/userAuthStore'
 const authStore = userAuthStore()
 const route = useRoute()
 const currentPath = route.path
-console.log(currentPath)
+const defaultActive = ref('1')
+if (currentPath === '/groomer-setting') {
+  console.log('setting')
+  defaultActive.value = '5'
+} else if (currentPath === '/groomer-orders') {
+  defaultActive.value = '3'
+} else if (currentPath === '/groomer-profile') {
+  defaultActive.value = '2'
+} else if (currentPath === '/groomer-dashboard') {
+  defaultActive.value = '1'
+} else if (currentPath === '/user-orders') {
+  defaultActive.value = '3'
+} else if (currentPath === '/user-profile') {
+  defaultActive.value = '2'
+} else {
+  defaultActive.value = '1'
+}
 
 const props = defineProps({
   isGroomer: {

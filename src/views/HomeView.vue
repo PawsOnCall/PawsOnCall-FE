@@ -7,7 +7,7 @@
         <h1>Welcome to PawsOnCall!</h1>
         <p>Your trusted in-home pet grooming service</p>
         <p></p>
-        <button>Get Started</button>
+        <button @click="SearchGroomers">Get Started</button>
       </div>
       <div class="hero-right"></div>
     </section>
@@ -17,17 +17,17 @@
       <h2>Our Services</h2>
       <div class="service-cards">
         <div class="service-card">
-          <img src="@/assets/service1.jpg" alt="Service 1">
+          <img src="@/assets/service1.jpg" alt="Service 1" />
           <h3>Grooming</h3>
           <p>Professional grooming services to keep your pet looking great.</p>
         </div>
         <div class="service-card">
-          <img src="@/assets/service2.jpg" alt="Service 2">
+          <img src="@/assets/service2.jpg" alt="Service 2" />
           <h3>Bathing</h3>
           <p>Expert bathing services to ensure your pet stays clean and healthy.</p>
         </div>
         <div class="service-card">
-          <img src="@/assets/service3.jpg" alt="Service 3">
+          <img src="@/assets/service3.jpg" alt="Service 3" />
           <h3>Nail Trimming</h3>
           <p>Keep your pet's nails trimmed and healthy with our services.</p>
         </div>
@@ -56,28 +56,53 @@
     <!-- 联系我们 -->
     <section class="contact">
       <h2>Contact Us</h2>
-      <form>
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Your Email" required>
-        <textarea placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-      </form>
+      <el-form size="large">
+        <el-form-item v-model="form">
+          <el-input type="text" placeholder="Your Name" v-model="form.name" />
+        </el-form-item>
+        <el-form-item>
+          <el-input type="email" placeholder="Your Email" v-model="form.email" />
+        </el-form-item>
+        <el-form-item>
+          <el-input type="textarea" rows="4" placeholder="Your Message" v-model="form.message" />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="SendMessage">Send Message</el-button>
+        </el-form-item>
+      </el-form>
     </section>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HomeView'
+<script lang="ts" setup>
+import router from '@/router'
+import { ElForm, ElMessage } from 'element-plus'
+import { reactive } from 'vue'
+const form = reactive({
+  name: '',
+  email: '',
+  message: ''
+})
+const SearchGroomers = () => {
+  console.log('SearchGroomers')
+  router.push({ name: 'groomer-list' })
+}
+
+const SendMessage = () => {
+  console.log('SendMessage')
+  if (form.name === '' || form.email === '' || form.message === '') {
+    ElMessage.error('Please fill in all fields')
+    return
+  }
+  ElMessage.success('Message sent successfully!')
 }
 </script>
 
 <style scoped>
 .home {
-  background-color: #f5f5f5; /* 整体背景改为原来的浅灰色 */
+  background-color: #f5f5f5;
 }
 
-/* 欢迎部分 */
 .hero {
   display: flex;
   height: 300px;
@@ -86,14 +111,15 @@ export default {
   align-items: center;
 }
 
-.hero-left, .hero-right {
+.hero-left,
+.hero-right {
   flex: 1;
   background: url('@/assets/hero-background.jpg') center center / cover no-repeat;
 }
 
 .hero-content {
   flex: 2;
-  background-color: #f5f5f5; /* 中间文字区域留白为背景色 */
+  background-color: #f5f5f5;
   padding: 50px 20px;
 }
 
@@ -115,10 +141,9 @@ export default {
   padding: 1em 2em;
   font-size: 1em;
   cursor: pointer;
-  margin-top: 1cm
+  margin-top: 1cm;
 }
 
-/* 我们的服务 */
 .services {
   text-align: center;
   padding: 50px 20px;
@@ -132,7 +157,7 @@ export default {
 
 .service-card {
   background-color: #eafaf1;
-  border: 2px solid #eafaf1; /* 图片的外框颜色改为浅绿色 */
+  border: 2px solid #eafaf1;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 10px;
@@ -154,7 +179,6 @@ export default {
   color: #7f8c8d;
 }
 
-/* 用户评价 */
 .testimonials {
   background-color: #f5f5f5;
   text-align: center;
@@ -169,7 +193,7 @@ export default {
 
 .testimonial-card {
   background-color: #eafaf1;
-  border: 2px solid #eafaf1; /* 图片的外框颜色改为浅绿色 */
+  border: 2px solid #eafaf1;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 10px;
@@ -188,7 +212,6 @@ export default {
   color: #7f8c8d;
 }
 
-/* 联系我们 */
 .contact {
   text-align: center;
   padding: 50px 20px;

@@ -4,21 +4,40 @@
       <el-col :span="20">
         <el-row :gutter="20">
           <el-col :span="4">
-            <UserCard :isGroomer="false" />
+            <!-- <UserCard :isGroomer="false" /> -->
           </el-col>
           <el-col :span="20">
             <div class="new-card-info">
               <h4>Order Detail</h4>
-              <div class="des">ServiceTime: {{ formatDate(order?.serviceTime) }}</div>
-              <div class="des">OrderNumber: {{ order?.id }}</div>
-              <div class="des">PaymentAmout: {{ order?.groomerFee || 0.0 }}</div>
-              <div class="groomer-detail">
-                <div class="groomer-photo"></div>
-                <div class="groomer-name"></div>
-                <div class="groomer-city">Vancouver, BC, Canada</div>
-                <div class="groomer-stars">
-                  <!-- <el-rate v-model="order?.data?.reviewStars" allow-half /> -->
-                </div>
+              <div class="des">Order Number: {{ order?.id }}</div>
+              <div class="des">Service Time: {{ formatDate(order?.serviceTime) }}</div>
+              <div class="des">Payment Amout: ${{ order?.groomerFee || '0.00' }}</div>
+              <el-divider></el-divider>
+              <div class="customer-detail">
+                <p>Groomer Info</p>
+                <p><img :src="order.groomerPhoto" alt="" /></p>
+                <p>Groomer Name: {{ order.groomerName }}</p>
+                <p>Groomer Address: {{ order.groomerAddress }}</p>
+                <p>Groomer Phone: {{ order.groomerPhone }}</p>
+                <p>Groomer Email: {{ order.groomerEmail }}</p>
+              </div>
+              <el-divider></el-divider>
+              <div class="review">
+                <p>Please Lighting the stars, from 5 to 1</p>
+                <el-rate v-model="rating" show-text size="large"></el-rate>
+                <el-divider></el-divider>
+                <p>Write your review</p>
+                <el-input
+                  v-model="reviewContent"
+                  type="textarea"
+                  :rows="4"
+                  size="large"
+                  placeholder="Please enter your review"
+                />
+                <el-divider></el-divider>
+                <el-button type="primary" size="large" @click="evaluateOrder"
+                  >Sumbit Review</el-button
+                >
               </div>
             </div>
           </el-col>
@@ -34,18 +53,23 @@
 <script lang="ts" setup>
 import Sidebar from '@/components/Siderbar.vue'
 import UserCard from '@/components/UserCard.vue'
-import { reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
-
+import { formatDate } from '@/utils'
 import { userAuthStore } from '@/stores/userAuthStore'
+import { ElMessage } from 'element-plus'
 const router = useRouter()
 const route = useRoute()
 const order = reactive<any>({})
-
+const rating = ref(0)
+const reviewContent = ref('')
+const userId = userAuthStore().userInfo.userId
+// console.log(userId)
+// const userId = 102
 const getOrders = async function () {
   try {
-    axios.get(`/api/api/order/getOrders?userId=${102}&userType=customer`).then((response) => {
+    axios.get(`/api/api/order/getOrders?userId=${userId}&userType=customer`).then((response) => {
       console.log(response.data)
       const orderList = response.data.data
       console.log(orderList)
@@ -53,48 +77,75 @@ const getOrders = async function () {
       const foundOrder = orderList.find((order: any) => order.id === Number(route.query.orderId))
       if (foundOrder) {
         Object.assign(order, foundOrder)
+        const groomerId = foundOrder.providerUserId
+        // const groomerId = 103
+        // api/customer/getProfile?userId=groomerUserId
+        axios.get(`/api/api/groomer/customerView?userId=${groomerId}`).then((response) => {
+          console.log(response.data)
+          if (response.data.code !== 200) {
+            ElMessage({
+              type: 'error',
+              message: `Error fetching groomer info`
+            })
+            return
+          }
+          const groomerInfo = response.data.data
+          order.groomerName = groomerInfo.firstName + ' ' + groomerInfo.lastName
+          order.groomerPhoto = groomerInfo.photo
+          order.groomerEmail = groomerInfo.email
+          order.groomerPhone = groomerInfo.phone
+          order.groomerPhoto = groomerInfo.photo
+
+          order.groomerAddress =
+            groomerInfo.streetNumber +
+            ', ' +
+            groomerInfo.street +
+            ', ' +
+            groomerInfo.locality +
+            ', ' +
+            groomerInfo.postCode
+        })
       } else {
         console.error('Order not found')
       }
       console.log(order)
-      // fetchOrderDetails(route.params.orderId)
-      // TODO: userId
-      // const userId = userAuthStore().userInfo.userId
-      // axios.get(`/api/api/order/getOrders?userId=${userId}`).then((response) => {
     })
   } catch (error) {
     console.error(error)
   }
 }
-getOrders()
 
-const formatDate = (isoString) => {
-  // const isoString = '2023-06-14T23:00:00.000-07:00';
-  const date = new Date(isoString)
-
-  const year = date.getFullYear()
-  const month = ('0' + (date.getMonth() + 1)).slice(-2) // 月份是从0开始的，所以要加1
-  const day = ('0' + date.getDate()).slice(-2)
-  const hours = ('0' + date.getHours()).slice(-2)
-  const minutes = ('0' + date.getMinutes()).slice(-2)
-  const seconds = ('0' + date.getSeconds()).slice(-2)
-
-  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-  console.log(formattedDate)
-  return formattedDate
+const evaluateOrder = async function () {
+  try {
+    axios
+      .post(`/api/api/order/evaluateOrder`, {
+        orderId: order.id,
+        reviewStars: rating.value,
+        reviewContent: reviewContent.value
+      })
+      .then((response) => {
+        console.log(response.data)
+        if (response.data.code !== 200) {
+          ElMessage({
+            type: 'error',
+            message: response.data.message || 'Error evaluating order'
+          })
+        } else {
+          ElMessage({
+            type: 'success',
+            message: 'Order evaluated successfully'
+          })
+          router.push({ name: 'user-dashboard' })
+        }
+      })
+  } catch (error) {
+    console.error(error)
+  }
 }
-const isoString = '2023-06-14T23:00:00.000-07:00'
-const date = new Date(isoString)
 
-const year = date.getFullYear()
-const month = ('0' + (date.getMonth() + 1)).slice(-2) // 月份是从0开始的，所以要加1
-const day = ('0' + date.getDate()).slice(-2)
-const hours = ('0' + date.getHours()).slice(-2)
-const minutes = ('0' + date.getMinutes()).slice(-2)
-const seconds = ('0' + date.getSeconds()).slice(-2)
-
-const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
-console.log(formattedDate)
+onMounted(() => {
+  getOrders()
+})
 </script>
 
 <style scoped>
@@ -108,6 +159,7 @@ console.log(formattedDate)
   border-radius: 4px;
   background: #fff;
   margin-bottom: 20px;
+  font-size: 14px;
 }
 h4 {
   font-size: 18px;
@@ -115,7 +167,21 @@ h4 {
   text-align: center;
 }
 .des {
-  font-size: 13px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+}
+.customer-detail {
+  p {
+    margin-bottom: 12px;
+  }
+  img {
+    display: block;
+    width: 100px;
+  }
+}
+.review {
+  margin-top: 20px;
+  p {
+    margin-bottom: 12px;
+  }
 }
 </style>

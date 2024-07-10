@@ -10,10 +10,10 @@
             <div class="new-card-info">
               <h4>Order History</h4>
               <el-table :data="orders.data" style="width: 100%" @row-click="handleRowClick">
-                <el-table-column prop="serviceTime" label="Date" width="260" />
-                <el-table-column prop="id" label="Order Number" width="180" />
+                <el-table-column prop="id" label="Order Number" />
                 <el-table-column prop="providerName" label="Groomer" />
-                <el-table-column prop="serviceFee" label="PaymentAmout" />
+                <el-table-column prop="groomerFee" label="PaymentAmout" />
+                <el-table-column prop="serviceTime" label="Date" />
               </el-table>
             </div>
           </el-col>
@@ -34,6 +34,7 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
+import { formatDate } from '@/utils'
 const router = useRouter()
 const handleRowClick = (row) => {
   console.log(row)
@@ -42,7 +43,8 @@ const handleRowClick = (row) => {
 }
 
 const userId = userAuthStore().userInfo.userId
-console.log(userId)
+// console.log(userId)
+// const userId = 102
 const orders = reactive({
   userId: userId,
   data: []
@@ -59,6 +61,16 @@ const getOrders = async function () {
       }
       if (response.data.data && response.data.data.data !== null) {
         orders.data = response.data.data
+        orders.data.forEach((order) => {
+          order.serviceTime = formatDate(order.serviceTime)
+          if (order.providerName === null) {
+            order.providerName = 'Unknown'
+          }
+          if (order.groomerFee === null) {
+            order.groomerFee = 0
+          }
+          order.groomerFee = '$' + order.groomerFee.toFixed(2)
+        })
       }
     })
   } catch (error) {

@@ -34,7 +34,7 @@
         </div>
       </el-col>
       <el-col :span="4">
-        <Sidebar :isGroomer="false" />
+        <Sidebar :isGroomer="true" />
       </el-col>
     </el-row>
   </div>
@@ -42,7 +42,7 @@
 
 <script setup>
 import Sidebar from '@/components/Siderbar.vue'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
@@ -124,6 +124,11 @@ const confirmAvailability = () => {
           type: 'success',
           message: ' Successfully set your available date'
         })
+      } else {
+        ElMessage({
+          type: 'error',
+          message: response.data.message || 'Error setting available date'
+        })
       }
     })
     .catch((error) => {
@@ -131,13 +136,16 @@ const confirmAvailability = () => {
     })
 }
 
-// Call getAvailableDates when component is mounted to fetch initial data
-// onMounted(() => {
-getAvailableDates()
-// })
+onMounted(() => {
+  getAvailableDates()
+})
 </script>
 
 <style scoped>
+.dashboard {
+  padding: 20px;
+  background: #f2f2f2;
+}
 .availability-calendar {
   padding: 20px;
   background-color: #fff;

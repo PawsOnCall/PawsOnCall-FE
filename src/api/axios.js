@@ -9,7 +9,7 @@ const instance = axios.create({
   }
 })
 
-//  Authorization
+// Authorization header
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
