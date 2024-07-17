@@ -24,7 +24,7 @@
               <el-divider></el-divider>
               <div class="review">
                 <p>Please Lighting the stars, from 5 to 1</p>
-                <el-rate v-model="rating" show-text size="large"></el-rate>
+                <el-rate v-model="rating" show-text size="large" :disabled="isReviewed"></el-rate>
                 <el-divider></el-divider>
                 <p>Write your review</p>
                 <el-input
@@ -33,9 +33,10 @@
                   :rows="4"
                   size="large"
                   placeholder="Please enter your review"
+                  :disabled="isReviewed"
                 />
                 <el-divider></el-divider>
-                <el-button type="primary" size="large" @click="evaluateOrder"
+                <el-button type="primary" size="large" @click="evaluateOrder" v-if="!isReviewed"
                   >Sumbit Review</el-button
                 >
               </div>
@@ -67,6 +68,7 @@ const reviewContent = ref('')
 const userId = userAuthStore().userInfo.userId
 // console.log(userId)
 // const userId = 102
+const isReviewed = ref(false)
 const getOrders = async function () {
   try {
     axios.get(`/api/api/order/getOrders?userId=${userId}&userType=customer`).then((response) => {
@@ -104,6 +106,17 @@ const getOrders = async function () {
             groomerInfo.locality +
             ', ' +
             groomerInfo.postCode
+
+          const review = groomerInfo.reviews.find((item) => item.consumerUserId === userId)
+          console.log(review)
+
+          if (review) {
+            reviewContent.value = review.reviewContent
+            rating.value = review.reviewStars
+            if (review.reviewStars && review.reviewContent) {
+              isReviewed.value = true
+            }
+          }
         })
       } else {
         console.error('Order not found')

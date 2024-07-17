@@ -81,14 +81,7 @@ const groomer = ref({
   profileImage: 'https://via.placeholder.com/100',
   name: 'Christopher & Khanh D.',
   stargroomer: true,
-  location: 'Vancouver, BC, V6B 1J2',
-  galleryImages: [
-    'https://via.placeholder.com/100',
-    'https://via.placeholder.com/100',
-    'https://via.placeholder.com/100',
-    'https://via.placeholder.com/100'
-  ],
-  galleryCount: 74
+  location: 'Vancouver, BC, V6B 1J2'
 })
 
 const services = ref([

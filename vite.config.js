@@ -17,7 +17,7 @@ export default defineConfig({
     // proxy: to solve CORS issue
     proxy: {
       '^/api': {
-        target: 'http://52.15.187.38:8080', // backend server
+        target: 'http://3.16.11.115:8080', // backend server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

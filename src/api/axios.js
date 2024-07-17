@@ -3,13 +3,13 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL: '/',
-  timeout: 1000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json'
   }
 })
 
-// Authorization header
+// Authorization
 instance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')

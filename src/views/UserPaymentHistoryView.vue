@@ -13,7 +13,7 @@
                 <el-table-column prop="serviceTime" label="Date" width="260" />
                 <el-table-column prop="id" label="Order Number" width="180" />
                 <el-table-column prop="providerName" label="Groomer" />
-                <el-table-column prop="serviceFee" label="PaymentAmout" />
+                <el-table-column prop="groomerFee" label="PaymentAmout" />
               </el-table>
             </div>
           </el-col>

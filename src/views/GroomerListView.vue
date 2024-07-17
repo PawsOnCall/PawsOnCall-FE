@@ -16,9 +16,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Address:">
-          <el-input type="text" v-model="form.address" />
+          <el-input type="text" v-model="form.address" placeholder="enter your address" />
         </el-form-item>
-        <el-form-item label="Dates:">
+        <el-form-item label="Service Dates:">
           <el-date-picker
             v-model="form.date"
             type="daterange"
@@ -35,11 +35,11 @@
             <el-checkbox value="Lily" name="type">Lily</el-checkbox>
           </el-checkbox-group>
         </el-form-item> -->
-        <el-form-item> <el-button type="primary" @click="onFilter">Filter</el-button></el-form-item>
+        <el-form-item> <el-button type="primary" @click="onFilter">Search</el-button></el-form-item>
       </el-form>
     </div>
 
-    <div class="results">
+    <div class="results" v-loading="loading">
       <div
         v-for="groomer in groomers"
         :key="groomer.userId"
@@ -47,7 +47,9 @@
         @click="viewDetail(groomer.userId)"
       >
         <div class="groomer-header">
-          <span class="availability">Confirmed availability: {{ startDate }} – {{ endDate }}</span>
+          <span class="availability" v-if="groomer.availableDates && groomer.availableDates.length"
+            >Confirmed availability: {{ groomer.startDate }} to {{ groomer.endDate }}</span
+          >
         </div>
         <div class="groomer-info">
           <img :src="groomer.photo" alt="groomer image" class="groomer-image" />
@@ -61,8 +63,8 @@
           </div>
         </div>
         <div class="groomer-details">
-          <span>{{ groomer.reviews }} reviews</span>
-          <span>{{ groomer.groomedCount }} repeat clients</span>
+          <span>{{ groomer.totalComments }} reviews</span>
+          <span v-if="groomer.groomedCount">{{ groomer.groomedCount }} repeat clients</span>
           <!-- <span class="serviceFee">from {{ groomer.serviceFee }} per night</span> -->
         </div>
       </div>
@@ -80,69 +82,71 @@ const router = useRouter()
 const form = reactive({
   serviceType: '',
   address: '',
-  city: '',
-  postcode: ''
+  date: ''
 })
-const serviceType = ref('Full grooming')
-const address = ref('1529 West Pender Street, Vancouver, BC')
-const startDate = ref('2024-06-13')
-const endDate = ref('2024-06-15')
-const selectedPets = ref(['HuiminLi'])
+const startDate = ref('')
+const endDate = ref('')
+const loading = ref(true)
+const groomers = ref([])
+const message = ref('Search Groomer')
 
-const groomers = ref([
-  {
-    id: 1,
-    name: 'Christopher & Khanh D.',
-    stargroomer: true,
-    description: 'At home 24/7 loving your pets!',
-    location: 'Vancouver, BC, V6B',
-    reviews: 80,
-    groomedCount: 16,
-    serviceFee: '$50',
-    photo: 'https://via.placeholder.com/150' // Placeholder image
-  },
-  {
-    id: 2,
-    name: 'Sue P.',
-    stargroomer: true,
-    description: 'Will love your dog like my own.',
-    location: 'Vancouver, BC, V6S',
-    reviews: 18,
-    groomedCount: 5,
-    serviceFee: '$118',
-    photo: 'https://via.placeholder.com/150' // Placeholder image
-  },
-  {
-    id: 3,
-    name: 'Charly K.',
-    stargroomer: false,
-    description: 'Animal Welfare Professional',
-    location: 'Vancouver, BC, V5T',
-    reviews: 24,
-    groomedCount: 8,
-    serviceFee: '$75',
-    photo: 'https://via.placeholder.com/150' // Placeholder image
-  }
-])
 const onFilter = () => {
   console.log('Filtering...')
+  groomers.value = []
+  if (form.serviceType) {
+    message.value += ` by service type:${form.serviceType}, `
+  }
+  if (form.address) {
+    message.value += ` near to address:${form.address}, `
+  }
+  if (form.date) {
+    startDate.value = form.date[0]
+    endDate.value = form.date[1]
+    message.value += ` available date:from ${startDate.value} to ${endDate.value} `
+  }
+  loading.value = true
+  getGroomers()
 }
 
 const viewDetail = (userId) => {
   router.push({ name: 'groomer-detail', query: { groomerId: userId } })
 }
-// TODO: GET groomers from API
+
 const getGroomers = async () => {
   await axios
-    .get('/api/api/groomer/page?pageNum=1&pageSize=50')
+    // .get('/api/api/groomer/page?pageNum=1&pageSize=50')
+    .get(
+      `/api/api/groomer/recommend?message=${message.value || 'groomer'}. please return json format data`
+    )
     .then((response) => {
-      console.log(response.data)
-      console.log(response.data.records)
-      groomers.value = response.data.records
+      if (!response.data.records || response.data.records.length === 0) {
+        ElMessage.warning('Sorry, No groomers found')
+      } else {
+        ElMessage.success('Groomers fetched successfully')
+        groomers.value = response.data.records
+        groomers.value.forEach((groomer) => {
+          if (groomer.availableDates.length > 0) {
+            groomer.startDate = formatDisplayDate(
+              groomer.availableDates[0].availableDate.slice(0, 10)
+            )
+            groomer.endDate = formatDisplayDate(
+              groomer.availableDates[groomer.availableDates.length - 1].availableDate.slice(0, 10)
+            )
+          }
+        })
+      }
+
+      loading.value = false
     })
     .catch((err) => {
-      ElMessage.error('Failed to fetch groomers')
+      console.log(err)
+      // ElMessage.error('Failed to fetch groomers')
     })
+}
+
+const formatDisplayDate = (date) => {
+  const [year, month, day] = date.split('-')
+  return `${month}/${day}`
 }
 
 onMounted(() => {

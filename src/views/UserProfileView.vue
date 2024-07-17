@@ -83,7 +83,7 @@
             <h3>Your email address</h3>
             <el-form size="large">
               <el-form-item label="Email" style="width: 400px">
-                <el-input v-model="userProfile.email" placeholder="mobile phone"> </el-input>
+                <el-input v-model="userProfile.email" placeholder="email"> </el-input>
               </el-form-item>
             </el-form>
 
@@ -208,6 +208,7 @@ const userProfile = reactive({
 const saveProfile = () => {
   console.log(userProfile)
   userProfile.photo = fileList.value[0].url
+  userProfile.userId = userId
   axios.post('/api/api/customer/saveProfile', userProfile).then((response) => {
     console.log(response)
     if (response.data.code === 200) {

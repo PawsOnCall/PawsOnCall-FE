@@ -6,8 +6,34 @@
       <div class="hero-content">
         <h1>Welcome to PawsOnCall!</h1>
         <p>Your trusted in-home pet grooming service</p>
-        <p></p>
-        <button @click="SearchGroomers">Get Started</button>
+        <div
+          style="
+            border: 1px solid #000;
+            font-size: 14px;
+            margin: 16px auto;
+            padding: 16px;
+            background: #000;
+            color: #fff;
+            border-radius: 24px;
+          "
+        >
+          <h3 style="margin-bottom: 12px">Ask PawsOnCall</h3>
+          <p style="font-size: 14px; color: #fff">
+            Sample：I need a groomer to come to my home to groom my dog or cat. I prefer the
+            appointment to be on Saturday afternoon 5pm. I need an experienced and well-reviewed
+            groomer, and the price should be around $100.
+          </p>
+        </div>
+        <div>
+          <el-input
+            type="textarea"
+            rows="4"
+            size="large"
+            v-model="message"
+            placeholder="enter what service you need here"
+          ></el-input>
+          <el-button @click="SearchGroomers">search</el-button>
+        </div>
       </div>
       <div class="hero-right"></div>
     </section>
@@ -56,18 +82,37 @@
     <!-- 联系我们 -->
     <section class="contact">
       <h2>Contact Us</h2>
-      <el-form size="large">
+      <el-form>
         <el-form-item v-model="form">
-          <el-input type="text" placeholder="Your Name" v-model="form.name" />
+          <el-input
+            type="text"
+            placeholder="Your Name"
+            v-model="form.name"
+            size="large"
+            style="width: 300px"
+          />
         </el-form-item>
         <el-form-item>
-          <el-input type="email" placeholder="Your Email" v-model="form.email" />
+          <el-input
+            type="email"
+            placeholder="Your Email"
+            v-model="form.email"
+            size="large"
+            style="width: 300px"
+          />
         </el-form-item>
         <el-form-item>
-          <el-input type="textarea" rows="4" placeholder="Your Message" v-model="form.message" />
+          <el-input
+            type="textarea"
+            rows="4"
+            placeholder="Your Message"
+            v-model="form.message"
+            size="large"
+            style="width: 300px"
+          />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="SendMessage">Send Message</el-button>
+          <el-button type="primary" @click="SendMessage" size="large">Send Message</el-button>
         </el-form-item>
       </el-form>
     </section>
@@ -77,7 +122,8 @@
 <script lang="ts" setup>
 import router from '@/router'
 import { ElForm, ElMessage } from 'element-plus'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+const message = ref('')
 const form = reactive({
   name: '',
   email: '',
@@ -85,7 +131,13 @@ const form = reactive({
 })
 const SearchGroomers = () => {
   console.log('SearchGroomers')
-  router.push({ name: 'groomer-list' })
+  if (message.value === '') {
+    ElMessage.error('Please enter a message')
+    return
+  }
+  setTimeout(() => {
+    router.push({ name: 'groomer-list' })
+  }, 1000)
 }
 
 const SendMessage = () => {
@@ -105,7 +157,7 @@ const SendMessage = () => {
 
 .hero {
   display: flex;
-  height: 300px;
+  /* height: 300px; */
   position: relative;
   text-align: center;
   align-items: center;
