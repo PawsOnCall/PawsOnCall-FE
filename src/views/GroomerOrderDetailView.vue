@@ -35,13 +35,11 @@
 
 <script lang="ts" setup>
 import Sidebar from '@/components/Siderbar.vue'
-import UserCard from '@/components/UserCard.vue'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import { formatDate } from '@/utils'
 import { userAuthStore } from '@/stores/userAuthStore'
-import { el } from 'element-plus/es/locale'
 const router = useRouter()
 const route = useRoute()
 const order = reactive<any>({})

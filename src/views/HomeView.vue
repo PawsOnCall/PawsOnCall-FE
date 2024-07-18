@@ -135,6 +135,7 @@ const SearchGroomers = () => {
     ElMessage.error('Please enter a message')
     return
   }
+  localStorage.setItem('searchMessage', message.value)
   setTimeout(() => {
     router.push({ name: 'groomer-list' })
   }, 1000)

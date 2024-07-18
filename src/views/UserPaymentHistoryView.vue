@@ -75,7 +75,7 @@ getOrders()
   margin-bottom: 20px;
 }
 h4 {
-  font-size: 18px;
+  font-size: 28px;
   margin: 20px auto;
   text-align: center;
 }

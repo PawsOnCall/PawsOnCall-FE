@@ -1,5 +1,6 @@
 <template>
   <div class="signup">
+    <img src="@/assets/bg3.jpg" class="bg" />
     <h1>Sign Up to PawsOnCall</h1>
 
     <el-form
@@ -51,15 +52,6 @@
         >
       </el-form-item>
     </el-form>
-
-    <!-- <div>-or-</div>
-    <el-form label-width="auto" :size="'large'">
-      <el-form-item>
-        <el-button type="primary" style="margin-left: 24px" round @click="onSubmitGoogle"
-          >Continue with Google</el-button
-        >
-      </el-form-item>
-    </el-form> -->
     <div class="tips">Already have a PawsOnCall account? <a @click="onSignin">Sign in now.</a></div>
   </div>
 </template>
@@ -70,13 +62,31 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 20px 180px;
-  padding-bottom: 24px;
-  background: #f2f2f2;
+  margin: 10px auto;
+  padding: 20px;
+  width: 980px;
+  position: relative;
+  z-index: 0;
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+  }
+
   h1 {
-    font-size: 18px;
+    font-size: 28px;
     margin: 20px;
     font-weight: bold;
+  }
+  .tips {
+    margin-top: 20px;
+    font-size: 18px;
+    position: relative;
+    z-index: 20;
   }
   .el-form-item {
     min-width: 210px;
@@ -153,12 +163,9 @@ const onSubmit = () => {
       }
     })
 }
-const onSubmitGoogle = () => {
-  console.log('onSubmitGoogle!')
-}
 
 const onSignin = () => {
-  // redirect to sign up page
+  // redirect to sign in page
   router.push({ name: 'signin' })
 }
 </script>

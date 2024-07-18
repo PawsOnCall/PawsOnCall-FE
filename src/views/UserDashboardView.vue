@@ -7,14 +7,6 @@
             <UserCard :user-info="{ name: userDashboard.name, photo: userDashboard.photo }" />
           </el-col>
           <el-col :span="16">
-            <!-- <div class="refer">
-              <h2>Refer a friend, Get $20</h2>
-              <p>
-                For every friend that books their first grooming, we will give you a $20 credit
-                towards your next booking.
-              </p>
-              <el-button type="default">Invite a friend</el-button>
-            </div> -->
             <div class="pets-section">
               <h2>Your Pets</h2>
               <template v-if="userDashboard.pets.length > 0">

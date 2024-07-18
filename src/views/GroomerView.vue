@@ -1,5 +1,7 @@
 <template>
   <div class="groomer">
+    <img src="@/assets/bg1.jpg" class="bg" />
+    <img src="@/assets/bg2.jpg" class="bg2" />
     <template v-if="!info.hasProfessionalBackground">
       <div class="step1">
         <h2>Let's get you started</h2>
@@ -62,14 +64,8 @@
               <el-checkbox value="Dog" name="type"> Dog </el-checkbox>
               <el-checkbox value="Cat" name="type"> Cat </el-checkbox>
             </el-checkbox-group>
-            <!-- <el-radio-group v-model="form.petType" class="ml-4">
-              <el-radio value="Dog" size="large">Dog</el-radio>
-              <el-radio value="Cat" size="large">Cat</el-radio>
-            </el-radio-group> -->
           </el-form-item>
-          <el-form-item
-            label="Have you got any groomming certification?(Anything related to the grooming industry)"
-          >
+          <el-form-item label="Have you got any groomming certification?">
             <el-radio-group v-model="form.hasCertification" class="ml-4">
               <el-radio :value="true" size="large">Yes</el-radio>
               <el-radio :value="false" size="large">No</el-radio>
@@ -177,9 +173,32 @@
   align-items: center;
   justify-content: center;
   margin: 24px auto;
-  max-width: 800px;
+  max-width: 980px;
+  font-weight: bold;
+  color: #000;
+  position: relative;
+  z-index: 12;
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    opacity: 0.5;
+  }
+  .bg2 {
+    position: absolute;
+    top: 730px;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    opacity: 0.5;
+  }
+
   h2 {
+    font-size: 22px;
     margin-bottom: 16px;
+    margin-top: 20px;
   }
   .subheading {
     margin: 10px auto;

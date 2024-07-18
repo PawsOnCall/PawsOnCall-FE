@@ -2,7 +2,13 @@
   <el-card class="box-card">
     <el-row>
       <el-col :span="12">
-        <img width="60px" :src="`${userInfo.photo}`" class="logo" />
+        <img
+          v-if="userInfo && userInfo.photo"
+          width="60px"
+          :src="`${userInfo.photo}`"
+          class="logo"
+        />
+        <img v-else width="60px" src="@/assets/avatar.jpg" class="logo" />
       </el-col>
       <el-col :span="12">
         <h2>{{ userInfo.name }}</h2>
@@ -44,7 +50,6 @@
 </template>
 
 <script lang="ts" setup>
-import { fa } from 'element-plus/es/locale'
 import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -58,8 +63,7 @@ const props = defineProps({
     default: () => {
       return {
         name: 'Frank',
-        photo:
-          'https://www.rawpixel.com/image/6196752/png-sticker-journal#eyJrZXlzIjoiY2F0Iiwic29ydGVkS2V5cyI6ImNhdCJ9'
+        photo: ''
       }
     }
   }

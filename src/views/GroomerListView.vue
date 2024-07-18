@@ -88,7 +88,11 @@ const startDate = ref('')
 const endDate = ref('')
 const loading = ref(true)
 const groomers = ref([])
+
 const message = ref('Search Groomer')
+localStorage.getItem('searchMessage')
+  ? (message.value = localStorage.getItem('searchMessage'))
+  : 'Search Groomer'
 
 const onFilter = () => {
   console.log('Filtering...')

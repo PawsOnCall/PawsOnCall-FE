@@ -1,10 +1,11 @@
 <template>
   <div class="signin">
+    <img src="@/assets/bg2.jpg" class="bg" />
     <h1>Sign In to PawsOnCall</h1>
     <el-form
       :model="form"
       label-width="auto"
-      style="max-width: 600px"
+      style="max-width: 980px"
       :label-position="'top'"
       :size="'large'"
     >
@@ -20,17 +21,7 @@
         >
       </el-form-item>
     </el-form>
-    <!-- <div>OR</div>
-    <el-form label-width="auto" style="max-width: 600px; margin-top: 30px" :size="'large'">
-      <el-form-item>
-        <el-button type="primary" round @click="onSubmitGoogle">Continue with Google</el-button>
-      </el-form-item>
-    </el-form> -->
 
-    <div class="agree">
-      By signing in, I agree to PawsOnCall's Terms of Service and Privacy Policy, confirm that I am
-      18 years of age or older, and consent to receiving email communication.
-    </div>
     <!-- <div class="forgot"><a @click="onForgetPwd">Forgot your password?</a></div> -->
     <div class="tips">Don't have an PawsOnCall account? <a @click="onSignup">Sign Up Now</a></div>
   </div>
@@ -44,20 +35,27 @@
   flex-direction: column;
   margin: 10px auto;
   padding: 20px;
-  width: 600px;
-  background: #f2f2f2;
+  width: 980px;
+  position: relative;
+  /* height: 600px; */
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    opacity: 0.5;
+  }
 
   h1 {
-    font-size: 18px;
+    font-size: 28px;
     margin: 20px;
     font-weight: bold;
   }
-
-  .agree {
-    font-size: 12px;
-  }
   .tips {
     margin-top: 20px;
+    font-size: 18px;
+    position: relative;
+    z-index: 20;
   }
   .el-form-item {
     min-width: 210px;
@@ -166,11 +164,6 @@ const onSubmitGoogle = () => {
     }
   })
   console.log('onSubmitGoogle!')
-}
-
-const onForgetPwd = () => {
-  // todo: redirect to sign up page
-  router.push({ name: 'forgot-password' })
 }
 
 const onSignup = () => {

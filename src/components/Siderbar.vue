@@ -22,10 +22,10 @@
       <i class="el-icon-picture"></i>
       <span slot="title">Setting</span>
     </el-menu-item>
-    <el-menu-item index="6" @click="onLogOut">
+    <!-- <el-menu-item index="6" @click="onLogOut">
       <i class="el-icon-switch-button"></i>
       <span slot="title">Log Out</span>
-    </el-menu-item>
+    </el-menu-item> -->
   </el-menu>
 </template>
 
@@ -86,10 +86,10 @@ const onOrders = () => {
   }
 }
 
-const onLogOut = () => {
-  authStore.logout()
-  router.push({ name: 'home' })
-}
+// const onLogOut = () => {
+//   authStore.logout()
+//   router.push({ name: 'home' })
+// }
 
 const onSetting = () => {
   router.push({ name: 'groomer-setting' })
