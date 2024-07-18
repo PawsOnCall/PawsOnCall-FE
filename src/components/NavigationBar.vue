@@ -14,9 +14,11 @@
       <RouterLink to="/signup">Sign Up</RouterLink>
       <RouterLink to="/signin">Sign In</RouterLink>
     </div>
-    <div class="sign-wrapper" v-else>
-      <RouterLink v-if="isGroomer" to="/groomer-dashboard">{{ userInfo.firstName }}</RouterLink>
-      <RouterLink v-else to="/user-dashboard">{{ userInfo.firstName }}</RouterLink>
+    <div v-else class="sign-wrapper">
+      <RouterLink v-if="isGroomer" to="/groomer-dashboard"
+        >Hello, {{ userInfo.firstName }}</RouterLink
+      >
+      <RouterLink v-else to="/user-dashboard"> Hello, {{ userInfo.firstName }}</RouterLink>
       <a class="logout" @click="Logout">Logout</a>
     </div>
   </header>
@@ -25,22 +27,22 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { userAuthStore } from '@/stores/userAuthStore'
-import { onMounted, ref } from 'vue'
-const isLogin = ref(false)
-const userInfo = ref(null)
-const isGroomer = ref(false)
+import { watchEffect, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
+const authStore = userAuthStore()
+const isLogin = computed(() => authStore.isLogin)
+const userInfo = computed(() => authStore.userInfo)
+const isGroomer = computed(() => userInfo.value?.userType === 'groomer')
+
+const router = useRouter()
 const Logout = () => {
   userAuthStore().logout()
   isLogin.value = false
-  userInfo.value = null
+  userInfo.value = {}
   isGroomer.value = false
+  router.push({ name: 'home' })
 }
-onMounted(() => {
-  isLogin.value = userAuthStore().isLogin
-  userInfo.value = userAuthStore().userInfo
-  isGroomer.value = userInfo.value.userType === 'groomer' ? true : false
-})
 </script>
 
 <style scoped>
