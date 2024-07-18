@@ -82,8 +82,8 @@
               <el-divider></el-divider>
               <h4>Additional Details</h4>
 
-              <el-form-item label="Micorchipped?">
-                <el-radio-group v-model="form.micorchipped">
+              <el-form-item label="microChipped?">
+                <el-radio-group v-model="form.microChipped">
                   <el-radio :value="true" size="large">Yes</el-radio>
                   <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
@@ -101,19 +101,19 @@
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Kids?">
-                <el-radio-group v-model="form.friendlyWithKids">
+                <el-radio-group v-model="form.friendlyWithChildren">
                   <el-radio :value="true" size="large">Yes</el-radio>
                   <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Dogs?">
-                <el-radio-group v-model="form.friendlyWithDogs">
+                <el-radio-group v-model="form.friendlyWithDog">
                   <el-radio :value="true" size="large">Yes</el-radio>
                   <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
               </el-form-item>
               <el-form-item label="Friendly With Cats?">
-                <el-radio-group v-model="form.friendlyWithCats">
+                <el-radio-group v-model="form.friendlyWithCat">
                   <el-radio :value="true" size="large">Yes</el-radio>
                   <el-radio :value="false" size="large">No</el-radio>
                 </el-radio-group>
@@ -206,12 +206,12 @@ const form = reactive({
   weight: '',
   sex: '',
   breed: '',
-  micorchipped: false,
+  microChipped: false,
   spayed: false,
   houseTrained: false,
-  friendlyWithKids: false,
-  friendlyWithDogs: false,
-  friendlyWithCats: false,
+  friendlyWithChildren: false,
+  friendlyWithDog: false,
+  friendlyWithCat: false,
   adoptionDate: '',
   aboutPet: ''
 })
@@ -233,18 +233,19 @@ const savePet = () => {
   console.log(fileList.value[0].url)
   axios
     .post(`/api/api/customer/savePet`, {
+      id: petId,
       userId: userId,
       type: form.petType,
       name: form.petName,
       weight: form.weight,
       sex: form.sex,
       breed: form.breed,
-      micorchipped: form.micorchipped,
+      microChipped: form.microChipped,
       spayed: form.spayed,
       houseTrained: form.houseTrained,
-      friendlyWithKids: form.friendlyWithKids,
-      friendlyWithDogs: form.friendlyWithDogs,
-      friendlyWithCats: form.friendlyWithCats,
+      friendlyWithChildren: form.friendlyWithChildren,
+      friendlyWithDog: form.friendlyWithDog,
+      friendlyWithCat: form.friendlyWithCat,
       adoptionDate: form.adoptionDate,
       aboutPet: form.aboutPet,
       photo: fileList.value[0].url
@@ -278,13 +279,13 @@ onMounted(() => {
       form.weight = petInfo.weight
       form.sex = petInfo.sex
       form.breed = petInfo.breed
-      form.micorchipped = petInfo.micorchipped
+      form.microChipped = petInfo.microChipped
       form.spayed = petInfo.spayed
 
       form.houseTrained = petInfo.houseTrained
-      form.friendlyWithKids = petInfo.friendlyWithKids
-      form.friendlyWithDogs = petInfo.friendlyWithDogs
-      form.friendlyWithCats = petInfo.friendlyWithCats
+      form.friendlyWithChildren = petInfo.friendlyWithChildren
+      form.friendlyWithDog = petInfo.friendlyWithDog
+      form.friendlyWithCat = petInfo.friendlyWithCat
       form.adoptionDate = petInfo.adoptionDate
       form.aboutPet = petInfo.aboutPet
       fileList.value.push({
