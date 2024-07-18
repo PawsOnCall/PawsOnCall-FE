@@ -156,8 +156,8 @@
 
 <script lang="ts" setup>
 import Sidebar from '@/components/Siderbar.vue'
-import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, reactive } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 import { ref } from 'vue'
 import { ElMessage, UploadUserFile } from 'element-plus'
@@ -166,6 +166,9 @@ import type { UploadFile } from 'element-plus'
 import { genFileId } from 'element-plus'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
 import { userAuthStore } from '@/stores/userAuthStore'
+
+const route = useRoute()
+const petId = route.query.petId
 
 const upload = ref<UploadInstance>()
 
@@ -257,6 +260,40 @@ const savePet = () => {
       console.error(error)
     })
 }
+
+onMounted(() => {
+  if (petId) {
+    axios.get(`/api/api/customer/getPet?id=${petId}`).then((response) => {
+      console.log(response.data)
+      if (response.data.code !== 200) {
+        ElMessage({
+          type: 'error',
+          message: response.data.message || 'Error fetching pet info'
+        })
+        return
+      }
+      const petInfo = response.data.data
+      form.petType = petInfo.type
+      form.petName = petInfo.name
+      form.weight = petInfo.weight
+      form.sex = petInfo.sex
+      form.breed = petInfo.breed
+      form.micorchipped = petInfo.micorchipped
+      form.spayed = petInfo.spayed
+
+      form.houseTrained = petInfo.houseTrained
+      form.friendlyWithKids = petInfo.friendlyWithKids
+      form.friendlyWithDogs = petInfo.friendlyWithDogs
+      form.friendlyWithCats = petInfo.friendlyWithCats
+      form.adoptionDate = petInfo.adoptionDate
+      form.aboutPet = petInfo.aboutPet
+      fileList.value.push({
+        name: 'pet-photo',
+        url: petInfo.photo
+      })
+    })
+  }
+})
 </script>
 <style scoped>
 .avatar-uploader .avatar {
@@ -267,6 +304,12 @@ const savePet = () => {
 
 .dashboard {
   padding: 20px;
+  width: 980px;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+  }
 }
 .user-card {
   margin-bottom: 20px;

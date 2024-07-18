@@ -9,10 +9,13 @@
           <el-col :span="16">
             <div class="pets-section">
               <h2>Your Pets</h2>
-              <template v-if="userDashboard.pets.length > 0">
+              <template v-if="userDashboard.pets && userDashboard.pets.length > 0">
                 <div class="petcard" v-for="(pet, i) in userDashboard.pets" :key="i">
                   <div class="pet-name">Pet Name:{{ pet.name }}</div>
                   <img class="pet-photo" :src="pet.photo" />
+                  <el-button type="primary" size="large" @click="onEditPet(pet)"
+                    >Edit pet info</el-button
+                  >
                 </div>
               </template>
 
@@ -37,7 +40,7 @@
 <script setup>
 import Sidebar from '@/components/Siderbar.vue'
 import UserCard from '@/components/UserCard.vue'
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import axios from 'axios'
@@ -48,6 +51,14 @@ const router = useRouter()
 const onAddPet = () => {
   //  redirect to add pet page
   router.push({ name: 'add-pet' })
+}
+const onEditPet = (pet) => {
+  //  redirect to add pet page
+  console.log(pet)
+  router.push({
+    name: 'add-pet',
+    query: { petId: pet.id }
+  })
 }
 
 const userId = userAuthStore().userInfo.userId
@@ -87,7 +98,10 @@ const getUserDashboard = async function () {
     console.error(error)
   }
 }
-getUserDashboard()
+
+onMounted(() => {
+  getUserDashboard()
+})
 </script>
 
 <style scoped>
@@ -134,9 +148,8 @@ getUserDashboard()
 
   .pet-photo {
     display: block;
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
+    width: 400px;
+    margin-bottom: 24px;
   }
 }
 </style>
