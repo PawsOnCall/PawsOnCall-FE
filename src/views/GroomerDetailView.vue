@@ -8,7 +8,7 @@
           <span class="star-groomer" v-if="groomer.stargroomer">Star groomer</span>
           <span>{{ groomer.location }}</span>
           <div class="rating">
-            <span v-for="star in 3" :key="star">⭐</span>
+            <span v-for="star in starLevelNum" :key="star">⭐</span>
           </div>
         </div>
       </div>
@@ -77,12 +77,40 @@ import axios from 'axios'
 import router from '@/router'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
+// import { random } from 'cypress/types/lodash'
 const groomer = ref({
   profileImage: 'https://via.placeholder.com/100',
   name: 'Christopher & Khanh D.',
   stargroomer: true,
   location: 'Vancouver, BC, V6B 1J2'
 })
+
+function getUserRating(userId) {
+  const lastDigit = parseInt(userId.toString().slice(-1), 10)
+
+  switch (lastDigit) {
+    case 0:
+    case 1:
+      return 1
+    case 2:
+    case 3:
+      return 2
+    case 4:
+    case 5:
+      return 3
+    case 6:
+    case 7:
+      return 4
+    case 8:
+    case 9:
+      return 5
+    default:
+      return 1
+  }
+}
+const groomerId = router.currentRoute.value.query.groomerId
+console.log(`groomerId:${groomerId} `)
+const starLevelNum = getUserRating(groomerId)
 
 const services = ref([
   { name: 'Bath & Nail', price: 50 },
