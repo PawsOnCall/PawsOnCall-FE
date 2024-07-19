@@ -15,7 +15,7 @@
       <RouterLink to="/signin">Sign In</RouterLink>
     </div>
     <div v-else class="sign-wrapper">
-      <RouterLink v-if="isGroomer" to="/groomer-dashboard"
+      <RouterLink v-if="isGroomer" to="/groomer-profile"
         >Hello, {{ userInfo.firstName }}</RouterLink
       >
       <RouterLink v-else to="/user-dashboard"> Hello, {{ userInfo.firstName }}</RouterLink>

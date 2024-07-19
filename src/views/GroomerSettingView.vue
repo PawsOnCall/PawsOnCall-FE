@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="groomer-setting">
     <el-row :gutter="20">
       <el-col :span="20">
         <div class="availability-calendar">
@@ -29,7 +29,7 @@
           </div>
           <div class="footer">
             <p>Last updated a day ago</p>
-            <button @click="confirmAvailability">Confirm Availability</button>
+            <el-button @click="confirmAvailability" size="large">Confirm Availability</el-button>
           </div>
         </div>
       </el-col>
@@ -142,16 +142,22 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.dashboard {
+.groomer-setting {
   padding: 20px;
   background: #f2f2f2;
 }
+.groomer-setting p {
+  font-size: 16px;
+  color: #000;
+  margin: 20px;
+  line-height: 2;
+}
 .availability-calendar {
-  padding: 20px;
+  padding: 20px 40px;
   background-color: #fff;
   border-radius: 5px;
   font-family: Arial, sans-serif;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -164,7 +170,7 @@ onMounted(() => {
 .calendar-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  gap: 10px;
 }
 
 .calendar-cell {

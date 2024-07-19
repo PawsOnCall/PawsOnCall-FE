@@ -27,3 +27,9 @@ a,
 .el-button {
   font-size: 18px !important;
 }
+
+.el-table__cell .cell,
+.el-table__empty-text {
+  font-size: 16px !important;
+  color: #000 !important;
+}

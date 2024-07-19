@@ -62,7 +62,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin: 10px auto;
+  margin: 0px auto;
   padding: 20px;
   width: 980px;
   position: relative;
@@ -79,18 +79,17 @@
 
   h1 {
     font-size: 28px;
-    margin: 20px;
     font-weight: bold;
   }
   .tips {
-    margin-top: 20px;
+    margin-top: 12px;
     font-size: 18px;
     position: relative;
     z-index: 20;
   }
   .el-form-item {
     min-width: 210px;
-    margin: 20px;
+    margin: 16px;
   }
 }
 </style>

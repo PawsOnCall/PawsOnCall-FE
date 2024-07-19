@@ -6,7 +6,7 @@
     active-text-color="#ffd04b"
     :default-active="defaultActive"
   >
-    <el-menu-item index="1" @click="onDashbord">
+    <el-menu-item index="1" @click="onDashbord" v-if="!isGroomer">
       <i class="el-icon-menu"></i>
       <span slot="title">Dashboard</span>
     </el-menu-item>
@@ -22,10 +22,14 @@
       <i class="el-icon-picture"></i>
       <span slot="title">Setting</span>
     </el-menu-item>
-    <!-- <el-menu-item index="6" @click="onLogOut">
+    <el-menu-item index="6" v-if="isGroomer" @click="onReceivePayment">
       <i class="el-icon-switch-button"></i>
-      <span slot="title">Log Out</span>
-    </el-menu-item> -->
+      <span slot="title">Payments</span>
+    </el-menu-item>
+    <el-menu-item index="7" v-if="isGroomer" @click="onEarning">
+      <i class="el-icon-switch-button"></i>
+      <span slot="title">Earnings</span>
+    </el-menu-item>
   </el-menu>
 </template>
 
@@ -66,7 +70,8 @@ const router = useRouter()
 
 const onDashbord = () => {
   if (props.isGroomer) {
-    router.push({ name: 'groomer-dashboard' })
+    // router.push({ name: 'groomer-dashboard' })
+    router.push({ name: 'groomer-profile' })
   } else {
     router.push({ name: 'user-dashboard' })
   }
@@ -86,13 +91,14 @@ const onOrders = () => {
   }
 }
 
-// const onLogOut = () => {
-//   authStore.logout()
-//   router.push({ name: 'home' })
-// }
-
 const onSetting = () => {
   router.push({ name: 'groomer-setting' })
+}
+const onReceivePayment = () => {
+  router.push({ name: 'receive-payment' })
+}
+const onEarning = () => {
+  router.push({ name: 'earning-history' })
 }
 </script>
 

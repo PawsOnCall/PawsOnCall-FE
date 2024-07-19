@@ -118,7 +118,7 @@ const onSubmit = async () => {
                 if (response.data.data.userType === 'customer') {
                   router.push({ name: 'user-dashboard' })
                 } else {
-                  router.push({ name: 'groomer-dashboard' })
+                  router.push({ name: 'groomer-profile' })
                 }
               }
             })
