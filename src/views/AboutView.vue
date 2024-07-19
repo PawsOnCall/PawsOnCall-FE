@@ -5,7 +5,7 @@
       <p>Your trusted in-home pet grooming service</p>
     </div>
     <div class="about-content">
-      <section>
+      <section class="section-bg-light">
         <h2>Our Mission</h2>
         <p>
           At PawsOnCall, our mission is to bridge the gap in the pet care market by offering convenient, personalized, and stress-free grooming services right at your doorstep. We understand the unique needs of pets, especially those with social anxiety or travel-induced stress, and aim to enhance their well-being through our tailored services.
@@ -21,7 +21,7 @@
           <li><strong>Flexible Scheduling:</strong> We offer flexible scheduling options to accommodate your busy lifestyle, allowing you to book services at your convenience.</li>
         </ul>
       </section>
-      <section>
+      <section class="section-bg-light">
         <h2>Our Community</h2>
         <p>
           PawsOnCall is more than just a service provider; we are a community of pet lovers dedicated to enhancing the quality of life for pets and their owners. By choosing us, you join a supportive network that values the well-being of pets and fosters strong relationships within the pet care community.
@@ -33,7 +33,7 @@
           We offer a range of grooming services, including bathing, nail trimming, hair grooming, and more. Each service is tailored to meet the individual needs of your pet, ensuring they look and feel their best.
         </p>
       </section>
-      <section>
+      <section class="section-bg-light">
         <h2>Join Us</h2>
         <p>
           Whether you are a pet owner looking for reliable grooming services or a pet care professional seeking flexible job opportunities, PawsOnCall welcomes you. Join us in creating a stress-free, convenient, and loving grooming experience for pets across Vancouver.
@@ -83,6 +83,13 @@ export default {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
+}
+
+.section-bg-light {
+  background-color: #f0f0f0; /* 浅灰色背景 */
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
 }
 
 .about-content section {
