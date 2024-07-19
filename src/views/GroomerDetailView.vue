@@ -192,174 +192,174 @@ const confirmGroomer = () => {
 .groomer-detail {
   margin: 24px;
   padding: 24px;
-}
 
-.profile-section {
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: row;
-}
+  .profile-section {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: row;
+  }
 
-.profile-header {
-  display: flex;
-  align-items: center;
-  margin-right: 12px;
-}
+  .profile-header {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+  }
 
-.profile-header img {
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  margin-right: 12px;
-}
+  .profile-header img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 12px;
+  }
 
-.profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 
-.star-groomer {
-  background-color: #ffd700;
-  color: white;
-  padding: 2px 5px;
-  border-radius: 5px;
-}
+  .star-groomer {
+    background-color: #ffd700;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 5px;
+  }
 
-.rating {
-  display: flex;
-  gap: 2px;
-}
+  .rating {
+    display: flex;
+    gap: 2px;
+  }
 
-.profile-gallery {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
+  .profile-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
 
-.profile-gallery img {
-  width: 100px;
-  height: 100px;
-}
+  .profile-gallery img {
+    width: 100px;
+    height: 100px;
+  }
 
-.details-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
+  .details-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
 
-.services,
-.availability,
-.reviews {
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  margin-bottom: 24px;
-}
+  .services,
+  .availability,
+  .reviews {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-bottom: 24px;
+  }
 
-.services h3,
-.availability h3,
-.reviews h3 {
-  margin-top: 0;
-  font-size: 18px;
-  font-weight: bold;
-}
+  .services h3,
+  .availability h3,
+  .reviews h3 {
+    margin-top: 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
 
-.services p,
-.availability p,
-.reviews p {
-  margin: 12px 0;
-}
+  .services p,
+  .availability p,
+  .reviews p {
+    margin: 12px 0;
+  }
 
-.confirm-button {
-  grid-column: 1 / -1;
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 18px;
-}
+  .confirm-button {
+    grid-column: 1 / -1;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+  }
 
-.confirm-button:hover {
-  background-color: #0056b3;
-}
+  .confirm-button:hover {
+    background-color: #0056b3;
+  }
 
-.review {
-  margin-bottom: 24px;
-}
+  .review {
+    margin-bottom: 24px;
+  }
 
-.review p {
-  margin: 12px 0;
-}
-.review-author {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
-/* .review strong {
+  .review p {
+    margin: 12px 0;
+  }
+  .review-author {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  /* .review strong {
   display: inline-block;
 } */
-.review-photo {
-  /* display: inline-block; */
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 12px;
-}
+  .review-photo {
+    /* display: inline-block; */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
 
-a {
-  color: #007bff;
-  text-decoration: none;
-}
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
 
-a:hover {
-  text-decoration: underline;
-}
+  a:hover {
+    text-decoration: underline;
+  }
 
-.availability-calendar {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 5px;
-  font-family: Arial, sans-serif;
-  max-width: 600px;
-  margin: 0 auto;
-}
+  .availability-calendar {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-.calendar {
-  display: grid;
-  grid-template-rows: repeat(2, auto);
-  gap: 10px;
-}
+  .calendar {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+  }
 
-.calendar-row {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
+  .calendar-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
 
-.calendar-cell {
-  text-align: center;
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-radius: 5px;
-  /* cursor: pointer; */
-}
+  .calendar-cell {
+    text-align: center;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    /* cursor: pointer; */
+  }
 
-.header-row .calendar-cell {
-  font-weight: bold;
-}
+  .header-row .calendar-cell {
+    font-weight: bold;
+  }
 
-.availability-row .calendar-cell.disabled {
-  background-color: transparent;
-  cursor: default;
-}
+  .availability-row .calendar-cell.disabled {
+    background-color: transparent;
+    cursor: default;
+  }
 
-.availability-row .calendar-cell.available {
-  background-color: #007bff;
-  color: #fff;
+  .availability-row .calendar-cell.available {
+    background-color: #007bff;
+    color: #fff;
+  }
 }
 </style>

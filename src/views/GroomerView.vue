@@ -272,7 +272,6 @@ const handlePictureCardPreview = (file: UploadFile) => {
 }
 
 const router = useRouter()
-// do not use same name with ref
 const form = reactive({
   firstName: '',
   lastName: '',

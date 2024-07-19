@@ -185,91 +185,91 @@ onMounted(() => {
 .groomer-list {
   display: flex;
   gap: 20px;
-}
 
-.sidebar {
-  width: 300px;
-  border: 1px solid #ddd;
-  padding: 20px;
-  background-color: #f9f9f9;
-}
+  .sidebar {
+    width: 300px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
 
-.sidebar h3 {
-  margin-top: 0;
-}
+  .sidebar h3 {
+    margin-top: 0;
+  }
 
-.sidebar input[type='text'],
-.sidebar input[type='date'] {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+  .sidebar input[type='text'],
+  .sidebar input[type='date'] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
-.date-inputs {
-  display: flex;
-  gap: 10px;
-}
+  .date-inputs {
+    display: flex;
+    gap: 10px;
+  }
 
-.results {
-  flex: 1;
-  padding: 20px;
-}
+  .results {
+    flex: 1;
+    padding: 20px;
+  }
 
-.groomer-card {
-  border: 1px solid #ddd;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  .groomer-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
 
-.groomer-header {
-  margin-bottom: 10px;
-}
+  .groomer-header {
+    margin-bottom: 10px;
+  }
 
-.availability {
-  font-weight: bold;
-  color: #555;
-}
+  .availability {
+    font-weight: bold;
+    color: #555;
+  }
 
-.groomer-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
+  .groomer-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
 
-.groomer-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-right: 15px;
-  border: 1px solid #ddd;
-}
+  .groomer-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 1px solid #ddd;
+  }
 
-.star-groomer {
-  background-color: #ffd700;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-right: 5px;
-}
+  .star-groomer {
+    background-color: #ffd700;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 5px;
+  }
 
-.groomer-details {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
+  .groomer-details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
 
-.groomer-details span {
-  flex: 1 1 auto;
-  margin: 5px 0;
-}
+  .groomer-details span {
+    flex: 1 1 auto;
+    margin: 5px 0;
+  }
 
-.serviceFee {
-  font-weight: bold;
-  color: green;
+  .serviceFee {
+    font-weight: bold;
+    color: green;
+  }
 }
 </style>
