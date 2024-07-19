@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="confirm-groomer">
     <div class="profile-section">
       <div class="profile-header">
         <img :src="sitter.profileImage" alt="sitter image" />
@@ -246,7 +246,7 @@ onMounted(() => {
 </script>
 
 <style>
-.container {
+.confirm-groomer {
   padding: 24px;
   width: 600px;
   margin: 24px auto;

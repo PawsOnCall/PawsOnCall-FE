@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="groomer-list">
     <div class="sidebar">
       <el-form
         :model="form"
@@ -28,13 +28,6 @@
             size="large"
           />
         </el-form-item>
-        <!-- <el-form-item label="Your Pet:">
-          <el-checkbox-group v-model="form.pet">
-            <el-checkbox value="Jack" name="type">Jack </el-checkbox>
-            <el-checkbox value="Rose" name="type">Rose</el-checkbox>
-            <el-checkbox value="Lily" name="type">Lily</el-checkbox>
-          </el-checkbox-group>
-        </el-form-item> -->
         <el-form-item> <el-button type="primary" @click="onFilter">Search</el-button></el-form-item>
       </el-form>
     </div>
@@ -189,7 +182,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.container {
+.groomer-list {
   display: flex;
   gap: 20px;
 }

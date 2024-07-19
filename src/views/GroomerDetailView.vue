@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="groomer-detail">
     <div class="profile-section">
       <div class="profile-header">
         <img :src="groomer.profileImage" alt="groomer image" />
@@ -189,7 +189,7 @@ const confirmGroomer = () => {
 </script>
 
 <style>
-.container {
+.groomer-detail {
   margin: 24px;
   padding: 24px;
 }
