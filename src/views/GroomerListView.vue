@@ -58,7 +58,7 @@
             <span v-if="groomer.stargroomer" class="star-groomer">Star groomer</span>
             <p>{{ groomer.headline }}</p>
             <p>
-              {{ groomer.areaLevel2 + ', ' + groomer.areaLevel1 }}
+              {{ groomer.locality + ', ' + groomer.areaLevel1 }}
             </p>
           </div>
         </div>
@@ -116,6 +116,34 @@ const viewDetail = (userId) => {
   router.push({ name: 'groomer-detail', query: { groomerId: userId } })
 }
 
+const getGroomersFromDB = async () => {
+  await axios
+    .get('/api/api/groomer/page?pageNum=1&pageSize=50')
+    .then((response) => {
+      if (!response.data.records || response.data.records.length === 0) {
+        ElMessage.warning('Sorry, No groomers found')
+      } else {
+        ElMessage.success('Groomers fetched successfully')
+        groomers.value = response.data.records
+        groomers.value.forEach((groomer) => {
+          if (groomer.availableDates.length > 0) {
+            groomer.startDate = formatDisplayDate(
+              groomer.availableDates[0].availableDate.slice(0, 10)
+            )
+            groomer.endDate = formatDisplayDate(
+              groomer.availableDates[groomer.availableDates.length - 1].availableDate.slice(0, 10)
+            )
+          }
+        })
+      }
+
+      loading.value = false
+    })
+    .catch((err) => {
+      console.log(err)
+      ElMessage.error('Failed to fetch groomers')
+    })
+}
 const getGroomers = async () => {
   await axios
     // .get('/api/api/groomer/page?pageNum=1&pageSize=50')
@@ -124,7 +152,8 @@ const getGroomers = async () => {
     )
     .then((response) => {
       if (!response.data.records || response.data.records.length === 0) {
-        ElMessage.warning('Sorry, No groomers found')
+        // ElMessage.warning('Sorry, No groomers found')
+        getGroomersFromDB()
       } else {
         ElMessage.success('Groomers fetched successfully')
         groomers.value = response.data.records
@@ -154,7 +183,8 @@ const formatDisplayDate = (date) => {
 }
 
 onMounted(() => {
-  getGroomers()
+  // getGroomers()
+  getGroomersFromDB()
 })
 </script>
 
