@@ -13,3 +13,27 @@ export function formatDate(isoString) {
   console.log(formattedDate)
   return formattedDate
 }
+
+export function getUserRating(userId) {
+  const lastDigit = parseInt(userId.toString().slice(-1), 10)
+
+  switch (lastDigit) {
+    case 0:
+    case 1:
+      return 1
+    case 2:
+    case 3:
+      return 2
+    case 4:
+    case 5:
+      return 3
+    case 6:
+    case 7:
+      return 4
+    case 8:
+    case 9:
+      return 5
+    default:
+      return 1
+  }
+}

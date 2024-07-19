@@ -77,7 +77,7 @@ import axios from 'axios'
 import router from '@/router'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
-// import { random } from 'cypress/types/lodash'
+import { getUserRating } from '@/utils'
 const groomer = ref({
   profileImage: 'https://via.placeholder.com/100',
   name: 'Christopher & Khanh D.',
@@ -85,29 +85,6 @@ const groomer = ref({
   location: 'Vancouver, BC, V6B 1J2'
 })
 
-function getUserRating(userId) {
-  const lastDigit = parseInt(userId.toString().slice(-1), 10)
-
-  switch (lastDigit) {
-    case 0:
-    case 1:
-      return 1
-    case 2:
-    case 3:
-      return 2
-    case 4:
-    case 5:
-      return 3
-    case 6:
-    case 7:
-      return 4
-    case 8:
-    case 9:
-      return 5
-    default:
-      return 1
-  }
-}
 const groomerId = router.currentRoute.value.query.groomerId
 console.log(`groomerId:${groomerId} `)
 const starLevelNum = getUserRating(groomerId)
@@ -369,7 +346,7 @@ a:hover {
   padding: 10px;
   background-color: #f2f2f2;
   border-radius: 5px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .header-row .calendar-cell {

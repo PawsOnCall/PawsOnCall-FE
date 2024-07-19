@@ -8,7 +8,7 @@
           <span class="star-sitter" v-if="sitter.starSitter">Star Sitter</span>
           <span>{{ sitter.location }}</span>
           <div class="rating">
-            <span v-for="star in 3" :key="star">⭐</span>
+            <span v-for="star in starLevelNum" :key="star">⭐</span>
           </div>
         </div>
       </div>
@@ -40,13 +40,13 @@
           </div>
         </div>
         <el-divider></el-divider>
-        <p>Select your preferred drop-off and pick-up times</p>
+        <p>Select your preferred times</p>
         <div class="drop-off">
-          <p>Drop-off Between</p>
+          <p>Arrive Between</p>
           <el-time-picker
             type="datetime"
             v-model="form.dropOffTimeStart"
-            placeholder="Drop-off start time"
+            placeholder="start time"
             style="width: 160px"
             size="large"
           />
@@ -54,25 +54,7 @@
           <el-time-picker
             type="datetime"
             v-model="form.dropOffTimeEnd"
-            placeholder="Drop-off end time"
-            style="width: 160px"
-            size="large"
-          />
-        </div>
-        <div class="drop-off">
-          <p>Pick-up Between</p>
-          <el-time-picker
-            type="datetime"
-            v-model="form.pickUpTimeStart"
-            placeholder="Pick-up start time"
-            style="width: 160px"
-            size="large"
-          />
-          <span> --</span>
-          <el-time-picker
-            type="datetime"
-            v-model="form.pickUpTimeEnd"
-            placeholder="Drop-off end time"
+            placeholder="end time"
             style="width: 160px"
             size="large"
           />
@@ -91,6 +73,11 @@ import axios from 'axios'
 import router from '@/router'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
+import { getUserRating } from '@/utils'
+const groomerId = router.currentRoute.value.query.groomerId
+console.log(`groomerId:${groomerId} `)
+const starLevelNum = getUserRating(groomerId)
+console.log(`starLevelNum:${starLevelNum} `)
 const sitter = ref({
   profileImage: 'https://via.placeholder.com/100',
   name: 'Christopher & Khanh D.',
@@ -191,6 +178,20 @@ const onReserve = () => {
   console.log('Reserve')
   console.log(selectedDate.value)
   console.log(form.value)
+  if (!selectedDate.value) {
+    ElMessage({
+      type: 'error',
+      message: `Please select a date`
+    })
+    return
+  }
+  if (!form.value.dropOffTimeStart || !form.value.dropOffTimeEnd) {
+    ElMessage({
+      type: 'error',
+      message: `Please select Arrive Time`
+    })
+    return
+  }
   const userInfo = userAuthStore().userInfo
   const consumerName = JSON.parse(localStorage.getItem('userProfile')).name
   axios
@@ -246,8 +247,9 @@ onMounted(() => {
 
 <style>
 .container {
-  margin: 24px;
   padding: 24px;
+  width: 600px;
+  margin: 24px auto;
 }
 
 .profile-section {
