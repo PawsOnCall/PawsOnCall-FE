@@ -6,20 +6,10 @@
       <div class="hero-content">
         <h1>Welcome to PawsOnCall!</h1>
         <p>Your trusted in-home pet grooming service</p>
-        <div
-          style="
-            border: 1px solid #000;
-            font-size: 14px;
-            margin: 16px auto;
-            padding: 16px;
-            background: #000;
-            color: #fff;
-            border-radius: 24px;
-          "
-        >
-          <h3 style="margin-bottom: 12px">Ask PawsOnCall</h3>
-          <p style="font-size: 14px; color: #fff">
-            Sample：I need a groomer to come to my home to groom my dog or cat. I prefer the
+        <div class="ask-pawsoncall">
+          <h3 class="highlight">Ask PawsOnCall</h3>
+          <p>
+            Sample: I need a groomer to come to my home to groom my dog or cat. I prefer the
             appointment to be on Saturday afternoon 5pm. I need an experienced and well-reviewed
             groomer, and the price should be around $100.
           </p>
@@ -31,6 +21,7 @@
             size="large"
             v-model="message"
             placeholder="enter what service you need here"
+            class="highlight-input"
           ></el-input>
           <el-button @click="SearchGroomers">search</el-button>
         </div>
@@ -40,7 +31,7 @@
 
     <!-- 我们的服务 -->
     <section class="services">
-      <h2>Our Services</h2>
+      <h2 class="bold-text">Our Services</h2>
       <div class="service-cards">
         <div class="service-card">
           <img src="@/assets/service1.jpg" alt="Service 1" />
@@ -62,7 +53,7 @@
 
     <!-- 用户评价 -->
     <section class="testimonials">
-      <h2>What Our Clients Say</h2>
+      <h2 class="bold-text">What Our Clients Say</h2>
       <div class="testimonial-cards">
         <div class="testimonial-card">
           <p>"PawsOnCall is amazing! They took great care of my dog right at home."</p>
@@ -76,12 +67,24 @@
           <p>"Convenient and stress-free grooming service. My cat loves it!"</p>
           <span>- Emily Johnson</span>
         </div>
+        <div class="testimonial-card">
+          <p>"Excellent service, very convenient and my dog loved the groomer!"</p>
+          <span>- Michael Brown</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"Highly satisfied with the grooming service. Will definitely recommend!"</p>
+          <span>- Sarah Wilson</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"PawsOnCall provided a stress-free experience for my cat. Great service!"</p>
+          <span>- Anna Taylor</span>
+        </div>
       </div>
     </section>
 
     <!-- 联系我们 -->
     <section class="contact">
-      <h2>Contact Us</h2>
+      <h2 class="bold-text">Contact Us</h2>
       <el-form>
         <el-form-item v-model="form">
           <el-input
@@ -154,11 +157,14 @@ const SendMessage = () => {
 <style scoped>
 .home {
   background-color: #f5f5f5;
+  background-image: url('@/assets/pet423.jpg'); /* 替换为你的背景图路径 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero {
   display: flex;
-  /* height: 300px; */
   position: relative;
   text-align: center;
   align-items: center;
@@ -172,8 +178,8 @@ const SendMessage = () => {
 
 .hero-content {
   flex: 2;
-  background-color: #f5f5f5;
   padding: 50px 20px;
+  border-radius: 24px;
 }
 
 .hero h1 {
@@ -195,6 +201,25 @@ const SendMessage = () => {
   font-size: 1em;
   cursor: pointer;
   margin-top: 1cm;
+}
+
+.ask-pawsoncall {
+  padding: 16px;
+}
+
+.ask-pawsoncall h3.highlight {
+  color: #ff4500; /* 醒目颜色 */
+  font-weight: bold;
+}
+
+.ask-pawsoncall p {
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+}
+
+.highlight-input :deep(.el-input__inner) {
+  border: 2px solid #ff4500 !important; /* 醒目颜色的边框 */
 }
 
 .services {
@@ -232,8 +257,11 @@ const SendMessage = () => {
   color: #7f8c8d;
 }
 
+.bold-text {
+  font-weight: bold;
+}
+
 .testimonials {
-  background-color: #f5f5f5;
   text-align: center;
   padding: 50px 20px;
 }
@@ -245,10 +273,10 @@ const SendMessage = () => {
 }
 
 .testimonial-card {
-  background-color: #eafaf1;
-  border: 2px solid #eafaf1;
+  background-color: #eafaf1; /* 保留背景色 */
+  border: 2px solid #eafaf1; /* 保留边框 */
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 保留阴影 */
   margin: 10px;
   padding: 20px;
   width: 30%;
