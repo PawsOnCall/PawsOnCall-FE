@@ -118,7 +118,7 @@ const viewDetail = (userId) => {
 
 const getGroomersFromDB = async () => {
   await axios
-    .get('/api/api/groomer/page?pageNum=1&pageSize=3')
+    .get('/api/api/groomer/page?pageNum=1&pageSize=50')
     .then((response) => {
       if (!response.data.records || response.data.records.length === 0) {
         ElMessage.warning('Sorry, No groomers found')
@@ -183,7 +183,8 @@ const formatDisplayDate = (date) => {
 }
 
 onMounted(() => {
-  getGroomers()
+  // getGroomers()
+  getGroomersFromDB()
 })
 </script>
 
