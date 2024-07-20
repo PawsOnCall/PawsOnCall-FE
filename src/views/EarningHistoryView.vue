@@ -15,7 +15,7 @@
                     <el-table-column prop="id" label="Order Number" />
                     <el-table-column prop="consumerName" label="Customer" />
                     <el-table-column prop="groomerFee" label="Earned" />
-                    <el-table-column prop="serviceTime" label="Date" />
+                    <el-table-column prop="createTime" label="Date" />
                   </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="Pending Earnings" name="Pending Earnings"
@@ -23,14 +23,14 @@
                     <el-table-column prop="id" label="Order Number" />
                     <el-table-column prop="consumerName" label="Customer" />
                     <el-table-column prop="groomerFee" label="Pending Earned" />
-                    <el-table-column prop="serviceTime" label="Date" /> </el-table
+                    <el-table-column prop="createTime" label="Date" /> </el-table
                 ></el-tab-pane>
                 <el-tab-pane label="Withdrawals" name="Withdrawals"
                   ><el-table :data="orders.data" style="width: 100%">
                     <el-table-column prop="id" label="Order Number" />
                     <el-table-column prop="consumerName" label="Customer" />
                     <el-table-column prop="serviceFee" label="Withrawn" />
-                    <el-table-column prop="serviceTime" label="Date" /></el-table
+                    <el-table-column prop="createTime" label="Date" /></el-table
                 ></el-tab-pane>
               </el-tabs>
             </div>
@@ -80,7 +80,7 @@ const getOrders = async function (status) {
         if (response.data.data && response.data.data.data !== null) {
           orders.data = response.data.data
           orders.data.forEach((order) => {
-            order.serviceTime = formatDate(order.serviceTime)
+            order.createTime = formatDate(order.createTime)
             if (order.consumerName === null) {
               order.consumerName = 'Unknown'
             }
