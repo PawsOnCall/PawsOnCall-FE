@@ -41,7 +41,9 @@
         @click="viewDetail(groomer.userId)"
       >
         <div class="groomer-header">
-          <span class="availability" v-if="groomer.availableDates && groomer.availableDates.length"
+          <span
+            class="availability-box"
+            v-if="groomer.availableDates && groomer.availableDates.length"
             >Confirmed availability: {{ groomer.startDate }} to {{ groomer.endDate }}</span
           >
         </div>
@@ -251,7 +253,7 @@ onMounted(() => {
     margin-bottom: 10px;
   }
 
-  .availability {
+  .availability-box {
     font-weight: bold;
     color: #555;
   }

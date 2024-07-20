@@ -11,6 +11,12 @@
               <h4>Order Detail</h4>
               <div class="des">Order Number: {{ order?.id }}</div>
               <div class="des">Create Time: {{ formatDate(order?.createTime) }}</div>
+              <div class="des">
+                Sevrice Time:
+                <span>{{ formatDate(order?.dropOffTimeStart) }}</span>
+                <span> ~ </span>
+                <span>{{ formatDate(order?.dropOffTimeEnd) }}</span>
+              </div>
               <div class="des">Payment Amout: ${{ order?.groomerFee || '0.00' }}</div>
               <div class="des" v-if="order.groomerFee === 50">Service Type:Bath & Nail</div>
               <div class="des" v-else-if="order.groomerFee === 80">Service Type:Bath & Haircut</div>
