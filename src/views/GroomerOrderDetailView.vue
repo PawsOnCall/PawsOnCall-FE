@@ -22,11 +22,11 @@
               <div class="des" v-if="order.groomerFee === 50">Service Type:Bath & Nail</div>
               <div class="des" v-else-if="order.groomerFee === 80">Service Type:Bath & Haircut</div>
               <div class="des" v-else-if="order.groomerFee === 100">Service Type:Full Grooming</div>
-
+              <div class="des" v-if="order.snapshot">Pet Name: {{ order.snapshot }}</div>
               <el-divider></el-divider>
               <div class="customer-detail">
                 <p>Customer Info</p>
-                <p><img :src="order.consumerPhoto" alt="" /></p>
+                <p><img :src="order.consumerPhoto" alt="" style="width: 400px" /></p>
                 <p>Customer Name: {{ order.consumerName }}</p>
                 <p>Customer Address: {{ order.consumerAddress }}</p>
                 <p>Customer Phone: {{ order.consumerPhone }}</p>
@@ -80,14 +80,19 @@ const getOrders = async function () {
           order.consumerEmail = consumerInfo.email
           order.consumerPhone = consumerInfo.phone
           order.consumerPhoto = consumerInfo.photo
-          order.consumerAddress =
-            consumerInfo.addressLine2 +
-            ', ' +
-            consumerInfo.addressLine1 +
-            ', ' +
-            consumerInfo.city +
-            ', ' +
-            consumerInfo.postCode
+          if (consumerInfo.addressLine2) {
+            order.consumerAddress =
+              consumerInfo.addressLine2 +
+              ', ' +
+              consumerInfo.addressLine1 +
+              ', ' +
+              consumerInfo.city +
+              ', ' +
+              consumerInfo.postCode
+          } else {
+            order.consumerAddress =
+              consumerInfo.addressLine1 + ', ' + consumerInfo.city + ', ' + consumerInfo.postCode
+          }
         })
       } else {
         console.error('Order not found')

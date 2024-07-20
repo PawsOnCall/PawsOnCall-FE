@@ -74,6 +74,24 @@
             <el-option label="Full Grooming" value="100"></el-option>
           </el-select>
         </div>
+        <el-divider></el-divider>
+        <p>Select your preferred Pets</p>
+        <div class="service">
+          <el-select
+            v-model="form.snapshot"
+            placeholder="Select service"
+            style="width: 320px"
+            clearable
+            size="large"
+          >
+            <el-option
+              v-for="pet in pets"
+              :key="pet.id"
+              :label="pet.name + '(' + pet.type + ')'"
+              :value="pet.name + '(' + pet.type + ')'"
+            ></el-option>
+          </el-select>
+        </div>
       </div>
     </div>
     <el-button type="primary" size="large" style="margin-left: 160px" @click="onReserve"
@@ -88,18 +106,22 @@ import axios from 'axios'
 import router from '@/router'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
+import { formatDate, convertToISO8601 } from '@/utils'
 const starLevelNum = ref(0)
 const sitter = ref({
   profileImage: 'https://via.placeholder.com/100',
-  name: 'Christopher & Khanh D.',
-  starSitter: true,
-  location: 'Vancouver, BC, V6B 1J2'
+  name: '',
+  starSitter: false,
+  location: ''
 })
+
+const pets = ref([])
 
 const form = ref({
   dropOffTimeStart: '',
   dropOffTimeEnd: '',
-  serviceFee: ''
+  serviceFee: '',
+  snapshot: ''
 })
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -228,10 +250,11 @@ const onReserve = () => {
       consumerName: consumerName,
       providerUserId: parseInt(router.currentRoute.value.query.groomerId),
       providerName: sitter.value.name,
-      date: selectedDate.value,
+      serviceTime: convertToISO8601(formatDate(selectedDate.value)),
       dropOffTimeStart: form.value.dropOffTimeStart,
       dropOffTimeEnd: form.value.dropOffTimeEnd,
-      serviceFee: form.value.serviceFee
+      serviceFee: form.value.serviceFee,
+      snapshot: form.value.snapshot
     })
     .then((response) => {
       console.log(response.data)
@@ -258,8 +281,24 @@ const onReserve = () => {
       }
     })
 }
+
+const getPets = () => {
+  axios
+    .get(`/api/api/customer/dashboard?userId=${userAuthStore().userInfo.userId}`)
+    .then((response) => {
+      console.log(response.data)
+      if (response.data.code !== 200) {
+        console.log(response.data)
+        return
+      }
+      if (response.data.data && response.data.data.pets !== null) {
+        pets.value = response.data.data.pets
+      }
+    })
+}
 onMounted(() => {
   getGroomerDetail()
+  getPets()
 })
 </script>
 

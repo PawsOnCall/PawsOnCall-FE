@@ -63,7 +63,7 @@ const getOrders = async function () {
       if (response.data.data && response.data.data.data !== null) {
         orders.data = response.data.data
         orders.data.forEach((order) => {
-          order.serviceTime = formatDate(order.serviceTime)
+          order.createTime = formatDate(order.createTime)
           if (order.consumerName === null) {
             order.consumerName = 'Unknown'
           }

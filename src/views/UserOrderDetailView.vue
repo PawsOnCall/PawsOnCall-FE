@@ -12,7 +12,7 @@
               <div class="des">Order Number: {{ order?.id }}</div>
               <div class="des">Create Time: {{ formatDate(order?.createTime) }}</div>
               <div class="des">
-                Sevrice Time:
+                Service Time:
                 <span>{{ formatDate(order?.dropOffTimeStart) }}</span>
                 <span> ~</span>
                 <span>{{ formatDate(order?.dropOffTimeEnd) }}</span>
@@ -21,6 +21,7 @@
               <div class="des" v-if="order.groomerFee === 50">Service Type:Bath & Nail</div>
               <div class="des" v-else-if="order.groomerFee === 80">Service Type:Bath & Haircut</div>
               <div class="des" v-else-if="order.groomerFee === 100">Service Type:Full Grooming</div>
+              <div class="des" v-if="order.snapshot">Pet Name: {{ order.snapshot }}</div>
               <el-divider></el-divider>
               <div class="customer-detail">
                 <p>Groomer Info</p>
