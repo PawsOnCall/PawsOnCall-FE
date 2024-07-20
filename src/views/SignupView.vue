@@ -1,7 +1,7 @@
 <template>
   <div class="signup">
     <img src="@/assets/bg3.jpg" class="bg" />
-    <h1>Sign Up to PawsOnCall</h1>
+    <h1>Register to PawsOnCall</h1>
 
     <el-form
       :model="form"

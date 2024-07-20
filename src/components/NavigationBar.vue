@@ -1,19 +1,19 @@
 <template>
   <header id="header" :class="{ sticky: isSticky }">
-    <img alt="PawsOnCall logo" class="logo" src="@/assets/logo.jpg" width="90" height="90" />
+    <img alt="PawsOnCall logo" class="logo" src="@/assets/logo.jpg" width="120" height="120" />
     <div class="wrapper">
       <img src="@/assets/bg4.jpg" class="bg4" />
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About Us</RouterLink>
-        <RouterLink to="/service-and-price">Service and Price</RouterLink>
-        <RouterLink to="/groomer-list">Top Groomers</RouterLink>
-        <RouterLink to="/become-a-groomer">Become a Groomer</RouterLink>
+        <RouterLink to="/" active-class="active">Home</RouterLink>
+        <RouterLink to="/about" active-class="active">About Us</RouterLink>
+        <RouterLink to="/service-and-price" active-class="active">Service</RouterLink>
+        <RouterLink to="/groomer-list" active-class="active">Top Groomers</RouterLink>
+        <RouterLink to="/become-a-groomer" active-class="active">Become a Groomer</RouterLink>
       </nav>
     </div>
     <div v-if="!isLogin" class="sign-wrapper">
-      <RouterLink to="/signup">Sign Up</RouterLink>
-      <RouterLink to="/signin">Sign In</RouterLink>
+      <RouterLink to="/signup" active-class="active">Register</RouterLink>
+      <RouterLink to="/signin" active-class="active">Sign In</RouterLink>
     </div>
     <div v-else class="sign-wrapper">
       <RouterLink v-if="isGroomer" to="/groomer-profile"
@@ -70,7 +70,7 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding: 1rem;
+  padding: 0;
   transition: all 0.3s;
 }
 
@@ -103,6 +103,10 @@ nav a {
 
 nav a:hover {
   text-decoration: underline;
+}
+nav a.active {
+  text-decoration: underline;
+  color: #007bff; /* Change the color to indicate the active link */
 }
 
 ul {
