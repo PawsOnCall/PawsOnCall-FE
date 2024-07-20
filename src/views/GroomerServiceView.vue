@@ -73,7 +73,7 @@ const saveProfile = () => {
   axios
     .post('/api/api/groomer/saveProfile', {
       id: groomerProfile.id,
-      serviceType: serviceType,
+      type: serviceType,
       userId: groomerProfile.userId,
       serviceCanceledPolicy: groomerProfile.serviceCanceledPolicy
     })
@@ -101,7 +101,7 @@ const getUserProfile = async function () {
       }
       if (response.data.data && response.data.data.data !== null) {
         groomerProfile.id = response.data.data.id
-        if (response.data.data.serviceType) {
+        if (response.data.data.type) {
           groomerProfile.serviceType = response.data.data.serviceType.split(',')
         } else {
           groomerProfile.serviceType = []

@@ -8,13 +8,14 @@
         :label-position="'top'"
         :size="'large'"
       >
-        <el-form-item label="Service Type:">
-          <el-select v-model="form.serviceType">
-            <el-option label="Full grooming" value="Full grooming" />
-            <el-option label="Bath & Haircut" value="Bath & Haircut" />
-            <el-option label="Bath & Nail" value="Bath & Nail" />
+        <!-- <el-form-item label="Service Type:">
+          <el-select v-model="form.serviceType" clearable>
+            <el-option label="Grooming" value="Grooming" />
+            <el-option label="Full grooming" value="Grooming,Bathing,Nail Triming" />
+            <el-option label="Bath & Nail Triming" value="Bath,Nail Triming" />
+            <el-option label="Bath & Grooming" value="Grooming,Bathing" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="Address:">
           <el-input type="text" v-model="form.address" placeholder="enter your address" />
         </el-form-item>
@@ -102,16 +103,37 @@ const onFilter = () => {
     message.value += ` available date:from ${startDate.value} to ${endDate.value} `
   }
   loading.value = true
-  getGroomers()
+  // getGroomers()
+  getGroomersFromDB()
 }
 
 const viewDetail = (userId) => {
   router.push({ name: 'groomer-detail', query: { groomerId: userId } })
 }
 
+const formatDateTime = (date) => {
+  return date.toISOString().slice(0, 19).replace('T', ' ')
+}
 const getGroomersFromDB = async () => {
+  const now = new Date()
+
+  const startDateTime =
+    form.date && form.date[0]
+      ? form.date[0].toISOString().slice(0, 10) + ' 00:00:00'
+      : formatDateTime(now)
+
+  const futureDate = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000)
+  const endDateTime =
+    form.date && form.date[1]
+      ? form.date[1].toISOString().slice(0, 10) + ' 23:59:59'
+      : formatDateTime(futureDate)
+
+  const serviceType = form.serviceType ? form.serviceType : ''
+  const address = form.address ? form.address : ''
   await axios
-    .get('/api/api/groomer/page?pageNum=1&pageSize=50')
+    .get(
+      `/api/api/groomer/page?pageNum=1&pageSize=30&address=${address}&serviceType=${serviceType}&startDate=${startDateTime}&endDate=${endDateTime}`
+    )
     .then((response) => {
       if (!response.data.records || response.data.records.length === 0) {
         ElMessage.warning('Sorry, No groomers found')
