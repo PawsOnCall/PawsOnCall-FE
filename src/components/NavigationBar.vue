@@ -7,6 +7,7 @@
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About Us</RouterLink>
         <RouterLink to="/service-and-price">Service and Price</RouterLink>
+        <RouterLink to="/groomer-list">Top Groomers</RouterLink>
         <RouterLink to="/become-a-groomer">Become a Groomer</RouterLink>
       </nav>
     </div>
@@ -27,7 +28,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { userAuthStore } from '@/stores/userAuthStore'
-import { watchEffect, computed, ref, onMounted, onUnmounted } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const authStore = userAuthStore()
@@ -41,6 +42,10 @@ const Logout = () => {
   isLogin.value = false
   userInfo.value = {}
   isGroomer.value = false
+  localStorage.removeItem('token')
+  localStorage.removeItem('userProfile')
+  localStorage.removeItem('groomerDashboard')
+  localStorage.removeItem('searchMessage')
   router.push({ name: 'home' })
 }
 

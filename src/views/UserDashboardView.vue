@@ -91,7 +91,7 @@ const getUserDashboard = async function () {
         userDashboard.photo = response.data.data.photo
         userDashboard.lastName = response.data.data.lastName
         userDashboard.name = response.data.data.firstName + ' ' + response.data.data.lastName
-        localStorage.setItem('userDashboard', JSON.stringify(userDashboard))
+        localStorage.setItem('userProfile', JSON.stringify(userDashboard))
       }
     })
   } catch (error) {

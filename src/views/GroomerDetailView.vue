@@ -7,9 +7,10 @@
           <h2>{{ groomer.name }}</h2>
           <span class="star-groomer" v-if="groomer.stargroomer">Star groomer</span>
           <span>{{ groomer.location }}</span>
-          <div class="rating">
+          <div class="rating" v-if="starLevelNum">
             <span v-for="star in starLevelNum" :key="star">⭐</span>
           </div>
+          <div v-else class="rating">暂无评级</div>
         </div>
       </div>
     </div>
@@ -72,22 +73,22 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 import router from '@/router'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
-import { getUserRating } from '@/utils'
+// import { getUserRating } from '@/utils'
 const groomer = ref({
   profileImage: 'https://via.placeholder.com/100',
-  name: 'Christopher & Khanh D.',
+  name: '.',
   stargroomer: true,
-  location: 'Vancouver, BC, V6B 1J2'
+  location: ''
 })
 
-const groomerId = router.currentRoute.value.query.groomerId
-console.log(`groomerId:${groomerId} `)
-const starLevelNum = getUserRating(groomerId)
+// const groomerId = router.currentRoute.value.query.groomerId
+// console.log(`groomerId:${groomerId} `)
+const starLevelNum = ref(0)
 
 const services = ref([
   { name: 'Bath & Nail', price: 50 },
@@ -140,6 +141,8 @@ function getGroomerDetail() {
       return
     }
     const groomerInfo = response.data.data
+    starLevelNum.value = Math.ceil(groomerInfo.star)
+    console.log(starLevelNum.value)
     groomer.value.name = groomerInfo.firstName + ' ' + groomerInfo.lastName
     groomer.value.profileImage = groomerInfo.photo
     groomer.value.location =
@@ -175,6 +178,24 @@ onMounted(() => {
 })
 
 const confirmGroomer = () => {
+  const authStore = userAuthStore()
+  const isLogin = computed(() => authStore.isLogin)
+  const userInfo = computed(() => authStore.userInfo)
+  const isGroomer = computed(() => userInfo.value?.userType === 'groomer')
+  if (!isLogin.value) {
+    ElMessage({
+      type: 'error',
+      message: `Please login first`
+    })
+    return
+  }
+  if (isGroomer.value) {
+    ElMessage({
+      type: 'error',
+      message: `You are a groomer, please login as a customer`
+    })
+    return
+  }
   const userId = userAuthStore().userInfo.userId
   const currentRoute = router.currentRoute.value.fullPath
   if (!userId) {

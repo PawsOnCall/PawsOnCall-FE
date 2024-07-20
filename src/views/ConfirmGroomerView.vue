@@ -59,6 +59,21 @@
             size="large"
           />
         </div>
+        <el-divider></el-divider>
+        <p>Select your preferred service</p>
+        <div class="service">
+          <el-select
+            v-model="form.serviceFee"
+            placeholder="Select service"
+            style="width: 320px"
+            clearable
+            size="large"
+          >
+            <el-option label="Bath & Nail" value="50"></el-option>
+            <el-option label="Bath & Haircut" value="80"></el-option>
+            <el-option label="Full Grooming" value="100"></el-option>
+          </el-select>
+        </div>
       </div>
     </div>
     <el-button type="primary" size="large" style="margin-left: 160px" @click="onReserve"
@@ -73,11 +88,7 @@ import axios from 'axios'
 import router from '@/router'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
-import { getUserRating } from '@/utils'
-const groomerId = router.currentRoute.value.query.groomerId
-console.log(`groomerId:${groomerId} `)
-const starLevelNum = getUserRating(groomerId)
-console.log(`starLevelNum:${starLevelNum} `)
+const starLevelNum = ref(0)
 const sitter = ref({
   profileImage: 'https://via.placeholder.com/100',
   name: 'Christopher & Khanh D.',
@@ -88,8 +99,7 @@ const sitter = ref({
 const form = ref({
   dropOffTimeStart: '',
   dropOffTimeEnd: '',
-  pickUpTimeStart: '',
-  pickUpTimeEnd: ''
+  serviceFee: ''
 })
 
 const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -144,13 +154,22 @@ function getGroomerDetail() {
   axios.get(`/api/api/groomer/customerView?userId=${groomerId}`).then((response) => {
     // console.log(response.data)
     if (response.data.code !== 200) {
-      ElMessage({
-        type: 'error',
-        message: `Error fetching groomer info`
-      })
-      return
+      if (response.data.msg === 'customer has no payment method') {
+        ElMessage({
+          type: 'error',
+          message: `You have no payment method, please add one first`
+        })
+      } else {
+        ElMessage({
+          type: 'error',
+          message: `Error fetching groomer info`
+        })
+        return
+      }
     }
     const groomerInfo = response.data.data
+    starLevelNum.value = Math.ceil(groomerInfo.star)
+    console.log(starLevelNum.value)
     sitter.value.name = groomerInfo.firstName + ' ' + groomerInfo.lastName
     sitter.value.profileImage = groomerInfo.photo
     sitter.value.location =
@@ -175,6 +194,9 @@ function getGroomerDetail() {
 }
 
 const onReserve = () => {
+  const authStore = userAuthStore()
+  const userInfo = authStore.userInfo
+
   console.log('Reserve')
   console.log(selectedDate.value)
   console.log(form.value)
@@ -188,11 +210,17 @@ const onReserve = () => {
   if (!form.value.dropOffTimeStart || !form.value.dropOffTimeEnd) {
     ElMessage({
       type: 'error',
-      message: `Please select Arrive Time`
+      message: `Please Select your preferred times`
     })
     return
   }
-  const userInfo = userAuthStore().userInfo
+  if (!form.value.serviceFee) {
+    ElMessage({
+      type: 'error',
+      message: `Please select a service type`
+    })
+    return
+  }
   const consumerName = JSON.parse(localStorage.getItem('userProfile')).name
   axios
     .post('/api/api/order/createOrder', {
@@ -203,10 +231,7 @@ const onReserve = () => {
       date: selectedDate.value,
       dropOffTimeStart: form.value.dropOffTimeStart,
       dropOffTimeEnd: form.value.dropOffTimeEnd,
-      pickUpTimeStart: form.value.pickUpTimeStart,
-      pickUpTimeEnd: form.value.pickUpTimeEnd
-      // petId: 1,
-      // petName: 'Buddy'
+      serviceFee: form.value.serviceFee
     })
     .then((response) => {
       console.log(response.data)
@@ -219,7 +244,7 @@ const onReserve = () => {
         } else {
           ElMessage({
             type: 'error',
-            message: `Error creating order`
+            message: response.data.msg || `Error creating order`
           })
         }
       } else {

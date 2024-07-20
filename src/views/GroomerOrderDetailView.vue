@@ -13,6 +13,10 @@
               <div class="des">Order Number: {{ order?.id }}</div>
               <div class="des">Service Time: {{ formatDate(order?.serviceTime) }}</div>
               <div class="des">Earning Amout: ${{ order?.groomerFee || '0.00' }}</div>
+              <div class="des" v-if="order.groomerFee === 50">Service Type:Bath & Nail</div>
+              <div class="des" v-else-if="order.groomerFee === 80">Service Type:Bath & Haircut</div>
+              <div class="des" v-else-if="order.groomerFee === 100">Service Type:Full Grooming</div>
+
               <el-divider></el-divider>
               <div class="customer-detail">
                 <p>Customer Info</p>
