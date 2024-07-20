@@ -13,7 +13,7 @@
                 <el-table-column prop="id" label="Order Number" />
                 <el-table-column prop="consumerName" label="Customer" />
                 <el-table-column prop="groomerFee" label="Earned" />
-                <el-table-column prop="serviceTime" label="Service Time" />
+                <el-table-column prop="createTime" label="Create Time" />
               </el-table>
             </div>
           </el-col>

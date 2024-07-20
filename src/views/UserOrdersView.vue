@@ -13,7 +13,7 @@
                 <el-table-column prop="id" label="Order Number" />
                 <el-table-column prop="providerName" label="Groomer" />
                 <el-table-column prop="groomerFee" label="PaymentAmout" />
-                <el-table-column prop="createTime" label="Date" />
+                <el-table-column prop="createTime" label="CreateTime" />
               </el-table>
             </div>
           </el-col>
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
 import Sidebar from '@/components/Siderbar.vue'
-import UserCard from '@/components/UserCard.vue'
+// import UserCard from '@/components/UserCard.vue'
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'

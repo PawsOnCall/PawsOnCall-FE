@@ -10,7 +10,7 @@
             <div class="new-card-info">
               <h4>Payments History</h4>
               <el-table :data="orders.data" style="width: 100%">
-                <el-table-column prop="serviceTime" label="Date" width="260" />
+                <el-table-column prop="createTime" label="Date" width="260" />
                 <el-table-column prop="id" label="Order Number" width="180" />
                 <el-table-column prop="providerName" label="Groomer" />
                 <el-table-column prop="groomerFee" label="PaymentAmout" />
@@ -33,6 +33,8 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
+import { formatDate } from '@/utils'
+
 const router = useRouter()
 
 const orders = reactive({
@@ -53,6 +55,16 @@ const getOrders = async function () {
       }
       if (response.data.data && response.data.data.data !== null) {
         orders.data = response.data.data
+        orders.data.forEach((order) => {
+          order.createTime = formatDate(order.createTime)
+          if (order.providerName === null) {
+            order.providerName = 'Unknown'
+          }
+          if (order.groomerFee === null) {
+            order.groomerFee = 0
+          }
+          order.groomerFee = '$' + order.groomerFee.toFixed(2)
+        })
       }
     })
   } catch (error) {

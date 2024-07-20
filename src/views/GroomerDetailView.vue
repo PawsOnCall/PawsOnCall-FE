@@ -173,9 +173,6 @@ function getGroomerDetail() {
     })
   })
 }
-onMounted(() => {
-  getGroomerDetail()
-})
 
 const confirmGroomer = () => {
   const authStore = userAuthStore()
@@ -207,6 +204,10 @@ const confirmGroomer = () => {
   // router.push('/confirm-groomer', { query: { groomerId: groomerId } })
   router.push({ name: 'confirm-groomer', query: { groomerId: groomerId } })
 }
+
+onMounted(() => {
+  getGroomerDetail()
+})
 </script>
 
 <style>

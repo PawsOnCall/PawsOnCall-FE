@@ -54,7 +54,7 @@
             <span v-if="groomer.stargroomer" class="star-groomer">Star groomer</span>
             <p>{{ groomer.headline }}</p>
             <p>
-              {{ groomer.locality + ', ' + groomer.areaLevel1 }}
+              {{ groomer.locality + ', BC' }}
             </p>
           </div>
         </div>
