@@ -102,7 +102,7 @@ const getUserProfile = async function () {
       if (response.data.data && response.data.data.data !== null) {
         groomerProfile.id = response.data.data.id
         if (response.data.data.type) {
-          groomerProfile.serviceType = response.data.data.serviceType.split(',')
+          groomerProfile.serviceType = response.data.data.type.split(',')
         } else {
           groomerProfile.serviceType = []
         }
