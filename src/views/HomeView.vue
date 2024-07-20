@@ -143,7 +143,7 @@ const SearchGroomers = () => {
   }
 
   setTimeout(() => {
-    router.push({ name: 'groomer-list' })
+    router.push({ name: 'groomer-recommend' })
   }, 1000)
 }
 

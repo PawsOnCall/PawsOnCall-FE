@@ -53,7 +53,6 @@
         <div class="groomer-details">
           <span>{{ groomer.totalComments }} reviews</span>
           <span v-if="groomer.groomedCount">{{ groomer.groomedCount }} repeat clients</span>
-          <!-- <span class="serviceFee">from {{ groomer.serviceFee }} per night</span> -->
         </div>
       </div>
     </div>
@@ -126,7 +125,7 @@ const getGroomersFromDB = async () => {
   const address = form.address ? form.address : ''
   await axios
     .get(
-      `/api/api/groomer/page?pageNum=1&pageSize=30&address=${address}&serviceType=${serviceType}&startDate=${startDateTime}&endDate=${endDateTime}`
+      `/api/api/groomer/page?pageNum=1&pageSize=3&address=${address}&serviceType=${serviceType}&startDate=${startDateTime}&endDate=${endDateTime}`
     )
     .then((response) => {
       if (!response.data.records || response.data.records.length === 0) {
@@ -155,7 +154,6 @@ const getGroomersFromDB = async () => {
 }
 const getGroomers = async () => {
   await axios
-    // .get('/api/api/groomer/page?pageNum=1&pageSize=50')
     .get(
       `/api/api/groomer/recommend?message=${message.value || 'groomer'}. please return json format data`
     )
@@ -192,8 +190,8 @@ const formatDisplayDate = (date) => {
 }
 
 onMounted(() => {
-  // getGroomers()
-  getGroomersFromDB()
+  getGroomers()
+  // getGroomersFromDB()
 })
 </script>
 
