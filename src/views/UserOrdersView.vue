@@ -9,7 +9,7 @@
           <el-col :span="22">
             <div class="new-card-info">
               <h4>Order History</h4>
-              <el-table :data="orders.data" style="width: 100%" @row-click="handleRowClick">
+              <el-table :data="orders.data" style="width: 100%" @row-click="handleRowClick" stripe>
                 <el-table-column prop="id" label="Order Number" />
                 <el-table-column prop="providerName" label="Groomer" />
                 <el-table-column prop="groomerFee" label="PaymentAmout" />
@@ -93,9 +93,11 @@ getOrders()
   margin-bottom: 20px;
 }
 h4 {
-  font-size: 18px;
+  font-size: 20px;
   margin: 20px auto;
   text-align: center;
+  color: #000;
+  font-weight: bold;
 }
 .des {
   font-size: 13px;

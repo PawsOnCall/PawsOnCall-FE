@@ -15,7 +15,7 @@
               <el-divider></el-divider>
               <div class="customer-detail">
                 <p>Groomer Info</p>
-                <p><img :src="order.groomerPhoto" alt="" /></p>
+                <p><img :src="order.groomerPhoto" alt="" style="width: 400px" /></p>
                 <p>Groomer Name: {{ order.groomerName }}</p>
                 <p>Groomer Address: {{ order.groomerAddress }}</p>
                 <p>Groomer Phone: {{ order.groomerPhone }}</p>
