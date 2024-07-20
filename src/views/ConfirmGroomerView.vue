@@ -198,7 +198,7 @@ const onReserve = () => {
     .post('/api/api/order/createOrder', {
       consumerUserId: userInfo.userId,
       consumerName: consumerName,
-      providerUserId: router.currentRoute.value.query.groomerId,
+      providerUserId: parseInt(router.currentRoute.value.query.groomerId),
       providerName: sitter.value.name,
       date: selectedDate.value,
       dropOffTimeStart: form.value.dropOffTimeStart,

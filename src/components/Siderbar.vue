@@ -42,7 +42,11 @@ const authStore = userAuthStore()
 const route = useRoute()
 const currentPath = route.path
 const defaultActive = ref('1')
-if (currentPath === '/groomer-setting') {
+if (currentPath === '/receive-payment') {
+  defaultActive.value = '6'
+} else if (currentPath === '/earning-history') {
+  defaultActive.value = '7'
+} else if (currentPath === '/groomer-setting') {
   console.log('setting')
   defaultActive.value = '5'
 } else if (currentPath === '/groomer-orders') {

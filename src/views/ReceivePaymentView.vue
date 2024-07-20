@@ -150,10 +150,10 @@ const savePayment = async function () {
       .then((response) => {
         console.log(response.data)
         ElMessage.success('Payment saved successfully')
-        setTimeout(() => {
-          // router.push({ name: 'groomer-dashboard' })
-          router.push({ name: 'groomer-profile' })
-        }, 1500)
+        // setTimeout(() => {
+        //   // router.push({ name: 'groomer-dashboard' })
+        //   // router.push({ name: 'groomer-profile' })
+        // }, 1500)
       })
   } catch (error) {
     console.error(error)

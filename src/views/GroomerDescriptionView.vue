@@ -86,9 +86,9 @@ const saveProfile = () => {
     console.log(response)
     if (response.data.code === 200) {
       ElMessage.success('Profile saved successfully')
-      setTimeout(() => {
-        router.push({ name: 'groomer-profile' })
-      }, 1500)
+      // setTimeout(() => {
+      //   router.push({ name: 'groomer-profile' })
+      // }, 1500)
     } else {
       ElMessage.error('Error saving profile')
     }
