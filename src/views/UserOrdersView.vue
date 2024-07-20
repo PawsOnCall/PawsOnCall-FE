@@ -13,7 +13,7 @@
                 <el-table-column prop="id" label="Order Number" />
                 <el-table-column prop="providerName" label="Groomer" />
                 <el-table-column prop="groomerFee" label="PaymentAmout" />
-                <el-table-column prop="serviceTime" label="Date" />
+                <el-table-column prop="createTime" label="Date" />
               </el-table>
             </div>
           </el-col>
@@ -62,7 +62,7 @@ const getOrders = async function () {
       if (response.data.data && response.data.data.data !== null) {
         orders.data = response.data.data
         orders.data.forEach((order) => {
-          order.serviceTime = formatDate(order.serviceTime)
+          order.createTime = formatDate(order.createTime)
           if (order.providerName === null) {
             order.providerName = 'Unknown'
           }

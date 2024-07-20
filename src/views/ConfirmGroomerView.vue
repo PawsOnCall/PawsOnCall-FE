@@ -216,28 +216,21 @@ const onReserve = () => {
             type: 'error',
             message: `You have no payment method, please add one first`
           })
-          setTimeout(() => {
-            router.push({
-              name: 'user-payment',
-              query: {
-                redirect: router.currentRoute.value.fullPath
-              }
-            })
-          }, 2000)
         } else {
           ElMessage({
             type: 'error',
             message: `Error creating order`
           })
         }
+      } else {
+        ElMessage({
+          type: 'success',
+          message: `Order created successfully`
+        })
+        setTimeout(() => {
+          router.push({ name: 'user-orders' })
+        }, 2000)
       }
-      ElMessage({
-        type: 'success',
-        message: `Order created successfully`
-      })
-      setTimeout(() => {
-        router.push({ name: 'user-orders' })
-      }, 2000)
     })
 }
 onMounted(() => {
