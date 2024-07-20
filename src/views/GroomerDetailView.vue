@@ -5,7 +5,7 @@
         <img :src="groomer.profileImage" alt="groomer image" />
         <div class="profile-info">
           <h2>{{ groomer.name }}</h2>
-          <span class="star-groomer" v-if="groomer.stargroomer">Star groomer</span>
+          <span class="star-groomer" v-if="starLevelNum">Star groomer</span>
           <span>{{ groomer.location }}</span>
           <div class="rating" v-if="starLevelNum">
             <span v-for="star in starLevelNum" :key="star">⭐</span>
@@ -82,7 +82,7 @@ import { ElMessage } from 'element-plus'
 const groomer = ref({
   profileImage: 'https://via.placeholder.com/100',
   name: '.',
-  stargroomer: true,
+  stargroomer: false,
   location: ''
 })
 

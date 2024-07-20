@@ -14,7 +14,7 @@
               <div class="des">
                 Sevrice Time:
                 <span>{{ formatDate(order?.dropOffTimeStart) }}</span>
-                <span> ~ </span>
+                <span> ~</span>
                 <span>{{ formatDate(order?.dropOffTimeEnd) }}</span>
               </div>
               <div class="des">Payment Amout: ${{ order?.groomerFee || '0.00' }}</div>
@@ -33,7 +33,7 @@
               <el-divider></el-divider>
               <div class="review">
                 <p>Please Lighting the stars, from 5 to 1</p>
-                <el-rate v-model="rating" show-text size="large" :disabled="isReviewed"></el-rate>
+                <el-rate v-model="rating" show-text size="large"></el-rate>
                 <el-divider></el-divider>
                 <p>Write your review</p>
                 <el-input
@@ -42,10 +42,9 @@
                   :rows="4"
                   size="large"
                   placeholder="Please enter your review"
-                  :disabled="isReviewed"
                 />
                 <el-divider></el-divider>
-                <el-button type="primary" size="large" @click="evaluateOrder" v-if="!isReviewed"
+                <el-button type="primary" size="large" @click="evaluateOrder"
                   >Sumbit Review</el-button
                 >
               </div>
@@ -89,6 +88,8 @@ const getOrders = async function () {
       if (foundOrder) {
         Object.assign(order, foundOrder)
         const groomerId = foundOrder.providerUserId
+        rating.value = foundOrder.reviewStars
+        reviewContent.value = foundOrder.reviewContent
         // const groomerId = 103
         // api/customer/getProfile?userId=groomerUserId
         axios.get(`/api/api/groomer/customerView?userId=${groomerId}`).then((response) => {
@@ -116,16 +117,16 @@ const getOrders = async function () {
             ', ' +
             groomerInfo.postCode
 
-          const review = groomerInfo.reviews.find((item) => item.consumerUserId === userId)
-          console.log(review)
+          // const review = groomerInfo.reviews.find((item) => item.consumerUserId === userId)
+          // console.log(review)
 
-          if (review) {
-            reviewContent.value = review.reviewContent
-            rating.value = review.reviewStars
-            if (review.reviewStars && review.reviewContent) {
-              isReviewed.value = true
-            }
-          }
+          // if (review) {
+          //   reviewContent.value = review.reviewContent
+          //   rating.value = review.reviewStars
+          //   if (review.reviewStars && review.reviewContent) {
+          //     isReviewed.value = true
+          //   }
+          // }
         })
       } else {
         console.error('Order not found')
@@ -157,7 +158,7 @@ const evaluateOrder = async function () {
             type: 'success',
             message: 'Order evaluated successfully'
           })
-          router.push({ name: 'user-dashboard' })
+          // router.push({ name: 'user-dashboard' })
         }
       })
   } catch (error) {
