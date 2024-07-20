@@ -1,8 +1,9 @@
 <template>
   <div class="groomer">
     <img src="@/assets/bg1.jpg" class="bg" />
-    <img src="@/assets/bg2.jpg" class="bg2" />
-    <template v-if="!info.hasProfessionalBackground">
+
+    <template v-if="!info.isAllSet">
+      <img src="@/assets/bg2.jpg" class="bg2" />
       <div class="step1">
         <h2>Let's get you started</h2>
         <div class="subheading">Personal Information</div>
@@ -30,7 +31,7 @@
             <el-input v-model="form.mailing" clearable />
           </el-form-item>
           <el-form-item label="Select Grooming Experience:">
-            <el-select v-model="form.groomingExperience">
+            <el-select v-model="form.groomingExperience" clearable>
               <el-option label="Beginner" value="1"></el-option>
               <el-option label="1-5 year" value="2"></el-option>
               <el-option label="5+ years" value="3"></el-option>
@@ -75,10 +76,11 @@
             <el-input
               v-model="form.certification"
               placeholder="Certificate or school name"
+              clearable
             ></el-input>
           </el-form-item>
           <el-form-item label="What would your weekly availability be?">
-            <el-select v-model="form.availabilityType">
+            <el-select v-model="form.availabilityType" clearable>
               <el-option label="Daily (Monday to Sunday)" value="Daily"></el-option>
               <el-option label="Weekdays (Monday to Friday)" value="Weekdays"></el-option>
               <el-option label="Weekends(Saturday to Sunday)" value="Weekends"></el-option>
@@ -158,7 +160,7 @@
         </el-dialog>
       </div>
     </template>
-    <div class="step-done" v-if="info.hasProfessionalBackground">
+    <div class="step-done" v-if="info.isAllSet">
       <div class="heading">You are all set!</div>
       <div class="subheading">You application was successfully submitted</div>
       <p>Thank you for your interest on join PawsOnCall, we will get in touch shortly.</p>
@@ -292,9 +294,7 @@ const form = reactive({
   instagram: ''
 })
 var info = reactive({
-  // hasBasicInfo: false,
-  // hasProfessionalInfo: false,
-  hasProfessionalBackground: false
+  isAllSet: false
 })
 
 const submitForm = () => {
@@ -311,18 +311,24 @@ const submitForm = () => {
       type: 'error',
       message: `Please fill in all the fields about your Personal Information`
     })
+    console.log('Please fill in all the fields about your Personal Information')
+    return
   }
   if (!form.role || !form.petType.length || !form.availabilityType) {
     ElMessage({
       type: 'error',
       message: `Please fill in all the fields about your Professional Background.`
     })
+    console.log('Please fill in all the fields about your Professional Background')
+    return
   }
   if (!form.selfIntroduction) {
     ElMessage({
       type: 'error',
       message: `Please tell us more about yourself and why you are loving grooming`
     })
+    console.log('Please tell us more about yourself and why you are loving grooming')
+    return
   }
   // submit form
 
@@ -349,7 +355,7 @@ const submitForm = () => {
     .then((res) => {
       console.log(res)
       if (res.data.code === 200) {
-        info.hasProfessionalBackground = true
+        info.isAllSet = true
       } else {
         ElMessage({
           type: 'error',

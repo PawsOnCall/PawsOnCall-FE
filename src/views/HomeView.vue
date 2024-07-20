@@ -134,11 +134,14 @@ const form = reactive({
 })
 const SearchGroomers = () => {
   console.log('SearchGroomers')
-  if (message.value === '') {
-    ElMessage.error('Please enter a message')
-    return
+  // if (message.value === '') {
+  //   ElMessage.error('Please enter a message')
+  //   return
+  // }
+  if (message.value) {
+    localStorage.setItem('searchMessage', message.value)
   }
-  localStorage.setItem('searchMessage', message.value)
+
   setTimeout(() => {
     router.push({ name: 'groomer-list' })
   }, 1000)
