@@ -16,14 +16,19 @@
                 :size="'large'"
                 :inline="true"
               >
-                <el-form-item label="County:" style="width: 300px">
-                  <el-input v-model="groomerProfile.country" clearable />
-                </el-form-item>
-                <el-form-item label="Province:" style="width: 300px">
-                  <el-input v-model="groomerProfile.areaLevel1" clearable />
-                </el-form-item>
                 <el-form-item label="City:" style="width: 300px">
-                  <el-input v-model="groomerProfile.locality" clearable />
+                  <el-select v-model="groomerProfile.locality" clearable>
+                    <el-option label="Vancouver" value="Vancouver"></el-option>
+                    <el-option label="Richmond" value="Richmond"></el-option>
+                    <el-option label="Burnaby" value="Burnaby"></el-option>
+                    <el-option label="North Vancouver" value="North Vancouver"></el-option>
+                    <el-option label="West Vancouver" value="West Vancouver"></el-option>
+                    <el-option label="Coquitlam" value="Coquitlam"></el-option>
+                    <el-option label="Delta" value="Delta"></el-option>
+                    <el-option label="New Westminster" value="New Westminster"></el-option>
+                    <el-option label="Langley" value="Langley"></el-option>
+                    <el-option label="Surrey" value="Surrey"></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="Street:" style="width: 300px">
                   <el-input v-model="groomerProfile.street" clearable />
@@ -34,12 +39,6 @@
                 <el-form-item label="Postal Code:" style="width: 300px">
                   <el-input v-model="groomerProfile.postCode" clearable />
                 </el-form-item>
-                <!-- <el-form-item label="Administratvie area level 1:" style="width: 300px">
-                  <el-input v-model="groomerProfile.areaLevel1" clearable />
-                </el-form-item>
-                <el-form-item label="Administratvie area level 2:" style="width: 300px">
-                  <el-input v-model="groomerProfile.areaLevel2" clearable />
-                </el-form-item> -->
               </el-form>
               <el-button type="primary" style="width: 300px" @click="saveProfile" size="large"
                 >Change Address</el-button
