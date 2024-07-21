@@ -11,11 +11,11 @@
               <h4>Order Detail</h4>
               <div class="des">Order Number: {{ order?.id }}</div>
               <div class="des">Create Time: {{ formatDate(order?.createTime) }}</div>
+              <div class="des">Service Date: {{ getDateFromServiceTime(order?.serviceTime) }}</div>
               <div class="des">
-                Service Time:
-                <span>{{ formatDate(order?.dropOffTimeStart) }}</span>
-                <span> ~</span>
-                <span>{{ formatDate(order?.dropOffTimeEnd) }}</span>
+                Arrive Between: <span>{{ getTimeFromDropOffStart(order?.dropOffTimeStart) }}</span>
+                <span> ~ </span>
+                <span>{{ getTimeFromDropOffStart(order?.dropOffTimeEnd) }}</span>
               </div>
               <div class="des">Payment Amout: ${{ order?.groomerFee || '0.00' }}</div>
               <div class="des" v-if="order.groomerFee === 50">Service Type:Bath & Nail</div>
@@ -66,7 +66,7 @@ import UserCard from '@/components/UserCard.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
-import { formatDate } from '@/utils'
+import { formatDate, getDateFromServiceTime, getTimeFromDropOffStart } from '@/utils'
 import { userAuthStore } from '@/stores/userAuthStore'
 import { ElMessage } from 'element-plus'
 const router = useRouter()

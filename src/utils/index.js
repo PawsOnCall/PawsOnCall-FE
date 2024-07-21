@@ -31,6 +31,48 @@ export function convertToISO8601(dateString) {
   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`
 }
 
+// Function to get YYYY-MM-DD from serviceTime
+export function getDateFromServiceTime(serviceTime) {
+  let date
+  if (serviceTime === undefined) {
+    date = new Date() // Use current date and time
+    console.log('Service time was undefined. Using current date.')
+  } else {
+    try {
+      date = new Date(serviceTime)
+      if (isNaN(date.getTime())) {
+        throw new Error('Invalid date')
+      }
+    } catch (error) {
+      console.error('Error processing service time:', error)
+      date = new Date() // Fallback to current date if there's an error
+      console.log('Using current date due to error in service time.')
+    }
+  }
+  return date.toISOString().split('T')[0]
+}
+
+// Function to get HH:mm:ss from dropOffTimeStart
+export function getTimeFromDropOffStart(dropOffTimeStart) {
+  let date
+  if (dropOffTimeStart === undefined) {
+    date = new Date() // Use current date and time
+    console.log('Drop-off time was undefined. Using current time.')
+  } else {
+    try {
+      date = new Date(dropOffTimeStart)
+      if (isNaN(date.getTime())) {
+        throw new Error('Invalid date')
+      }
+    } catch (error) {
+      console.error('Error processing drop-off time:', error)
+      date = new Date() // Fallback to current date if there's an error
+      console.log('Using current time due to error in drop-off time.')
+    }
+  }
+  return date.toISOString().split('T')[1].split('.')[0]
+}
+
 export function getUserRating(userId) {
   const lastDigit = parseInt(userId.toString().slice(-1), 10)
 
