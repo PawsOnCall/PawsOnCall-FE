@@ -156,9 +156,7 @@ const getGroomersFromDB = async () => {
 const getGroomers = async () => {
   await axios
     // .get('/api/api/groomer/page?pageNum=1&pageSize=50')
-    .get(
-      `/api/api/groomer/recommend?message=${message.value || 'groomer'}. please return json format data`
-    )
+    .get(`/api/api/groomer/recommend?message=${message.value || 'groomer'}`)
     .then((response) => {
       if (!response.data.records || response.data.records.length === 0) {
         // ElMessage.warning('Sorry, No groomers found')
