@@ -8,7 +8,9 @@
         <RouterLink to="/about" active-class="active">About Us</RouterLink>
         <RouterLink to="/service-and-price" active-class="active">Service</RouterLink>
         <RouterLink to="/groomer-list" active-class="active">Top Groomers</RouterLink>
-        <RouterLink to="/become-a-groomer" active-class="active">Become a Groomer</RouterLink>
+        <RouterLink v-if="!isGroomer" to="/become-a-groomer" active-class="active"
+          >Become a Groomer</RouterLink
+        >
       </nav>
     </div>
     <div v-if="!isLogin" class="sign-wrapper">

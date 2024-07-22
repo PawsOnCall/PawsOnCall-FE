@@ -10,7 +10,7 @@
           <div class="rating" v-if="starLevelNum">
             <span v-for="star in starLevelNum" :key="star">⭐</span>
           </div>
-          <div v-else class="rating">暂无评级</div>
+          <div v-else class="rating">no rating data</div>
         </div>
       </div>
     </div>
@@ -51,7 +51,8 @@
       </div>
       <div class="details-right">
         <div class="reviews">
-          <h3>Reviews</h3>
+          <h3>Customer Reviews</h3>
+          <div class="review" v-if="!reviews.length">no review data</div>
           <div class="review" v-for="(review, index) in reviews" :key="review.author">
             <div class="review-author">
               <img :src="review.photo" class="review-photo" />
