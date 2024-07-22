@@ -32,7 +32,7 @@
           </div>
           <div class="service-box light-blue">
             <h3>Full Grooming</h3>
-            <p class="price">$120+</p>
+            <p class="price">$100+</p>
             <p>Includes:</p>
             <ul>
               <li>• Bath</li>
@@ -77,7 +77,7 @@
           </div>
           <div class="service-box light-blue">
             <h3>Full Grooming</h3>
-            <p class="price">$120+</p>
+            <p class="price">$100+</p>
             <p>Includes:</p>
             <ul>
               <li>• Bath</li>
